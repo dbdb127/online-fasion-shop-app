@@ -4,10 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.kakao.usermgmt.UserManagement;
+import com.kakao.usermgmt.callback.LogoutResponseCallback;
 
 public class SubActivity extends AppCompatActivity {
 
@@ -31,8 +34,24 @@ public class SubActivity extends AppCompatActivity {
         tv_nick.setText(strNick);
         // set email
         tv_email.setText(strEmail);
-
+        // set profile image
         Glide.with(this).load(strProfileImg).into(iv_profile);
+
+        // log out
+        findViewById(R.id.btn_logout).setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                UserManagement.getInstance().requestLogout(new LogoutResponseCallback() {
+                    @Override
+                    public void onCompleteLogout() {
+                        // logout success
+                        finish(); // Terminate current activity
+                    }
+                });
+            }
+        });
 
     }
 }

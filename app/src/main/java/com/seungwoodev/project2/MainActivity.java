@@ -1,5 +1,6 @@
 package com.seungwoodev.project2;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -14,6 +15,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.kakao.auth.ISessionCallback;
+import com.kakao.auth.Session;
 import com.kakao.network.ErrorResult;
 import com.kakao.usermgmt.LoginButton;
 import com.kakao.usermgmt.UserManagement;
@@ -57,16 +59,19 @@ public class MainActivity extends AppCompatActivity {
                         intent.putExtra("profileImg", result.getKakaoAccount().getProfile().getProfileImageUrl());
                         intent.putExtra("email", result.getKakaoAccount().getEmail());
                         startActivity(intent);
-                        Toast.makeText(MainActivity.this, "세션이 닫혔습니다.. 다시 시도해주세요", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(MainActivity.this, "세션이 닫혔습니다.. 다시 시도해주세요", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
 
             @Override
             public void onSessionOpenFailed(KakaoException exception) {
-
+                Toast.makeText(MainActivity.this, "onSessionOpenFailed", Toast.LENGTH_SHORT).show();
             }
         };
+        Session.getCurrentSession().addCallback(mSessionCallback);
+        Session.getCurrentSession().checkAndImplicitOpen();
+
 
         LoginButton btn_login = findViewById(R.id.btn_login);
         btn_login.setOnClickListener(new View.OnClickListener(){
@@ -95,5 +100,18 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception e) {
             Log.e("name not found", e.toString());
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable @org.jetbrains.annotations.Nullable Intent data) {
+        if (Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data))
+            super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
+        Session.getCurrentSession().removeCallback(mSessionCallback);
     }
 }

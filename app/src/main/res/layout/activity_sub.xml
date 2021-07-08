@@ -26,13 +26,14 @@
         android:text="TextView"
         android:textColor="#FC040202"
         android:textSize="16sp"
-        app:layout_constraintTop_toBottomOf="@+id/tv_email"
-        tools:layout_editor_absoluteX="176dp" />
+        app:layout_constraintEnd_toEndOf="@+id/tv_email"
+        app:layout_constraintStart_toStartOf="@+id/tv_email"
+        app:layout_constraintTop_toBottomOf="@+id/tv_email" />
 
     <ImageView
         android:id="@+id/iv_profile"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_marginTop="100dp"
         android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toTopOf="@+id/tv_email"
@@ -41,4 +42,14 @@
         app:layout_constraintStart_toStartOf="@+id/tv_email"
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@tools:sample/avatars" />
+
+    <Button
+        android:id="@+id/btn_logout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="376dp"
+        android:text="Button"
+        app:layout_constraintEnd_toEndOf="@+id/tv_nickName"
+        app:layout_constraintStart_toStartOf="@+id/tv_nickName"
+        app:layout_constraintTop_toBottomOf="@+id/tv_nickName" />
 </androidx.constraintlayout.widget.ConstraintLayout>
