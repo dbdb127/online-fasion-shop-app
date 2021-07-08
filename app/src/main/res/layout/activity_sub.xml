@@ -47,9 +47,20 @@
         android:id="@+id/btn_logout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="376dp"
-        android:text="Button"
+        android:layout_marginTop="312dp"
+        android:text="Logout"
         app:layout_constraintEnd_toEndOf="@+id/tv_nickName"
+        app:layout_constraintStart_toStartOf="@+id/tv_nickName"
+        app:layout_constraintTop_toBottomOf="@+id/tv_nickName" />
+
+    <Button
+        android:id="@+id/btn_tab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Go to the tab"
+        app:layout_constraintBottom_toTopOf="@+id/btn_logout"
+        app:layout_constraintEnd_toEndOf="@+id/tv_nickName"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="@+id/tv_nickName"
         app:layout_constraintTop_toBottomOf="@+id/tv_nickName" />
 </androidx.constraintlayout.widget.ConstraintLayout>

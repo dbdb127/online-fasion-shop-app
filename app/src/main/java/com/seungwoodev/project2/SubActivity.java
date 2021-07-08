@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,6 +16,7 @@ import com.kakao.usermgmt.callback.LogoutResponseCallback;
 public class SubActivity extends AppCompatActivity {
 
     private String strNick, strProfileImg, strEmail;
+    private Button tab_button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +52,17 @@ public class SubActivity extends AppCompatActivity {
                         finish(); // Terminate current activity
                     }
                 });
+            }
+        });
+
+        // when click, go to the tab
+        tab_button = (Button)findViewById(R.id.btn_tab);
+        tab_button.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SubActivity.this, MainActivity2.class);
+                startActivity(intent);
             }
         });
 
