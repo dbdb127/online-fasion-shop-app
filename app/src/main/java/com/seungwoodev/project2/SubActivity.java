@@ -16,7 +16,7 @@ import com.kakao.usermgmt.callback.LogoutResponseCallback;
 public class SubActivity extends AppCompatActivity {
 
     private String strNick, strProfileImg, strEmail;
-    private Button tab_button;
+    private Button tab_button, logout_button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +40,8 @@ public class SubActivity extends AppCompatActivity {
         Glide.with(this).load(strProfileImg).into(iv_profile);
 
         // log out
-        findViewById(R.id.btn_logout).setOnClickListener(new View.OnClickListener()
+        logout_button = (Button)findViewById(R.id.btn_logout);
+        logout_button.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
