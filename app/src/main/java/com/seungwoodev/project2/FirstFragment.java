@@ -67,7 +67,6 @@ public class FirstFragment extends Fragment {
         mImages = new ArrayList<Integer>();
         qty = new ArrayList<Integer>();
 
-<<<<<<< HEAD
         adapter = new FirstAdapter(getActivity().getApplicationContext(), names, prices, mImages);
 
         //product list
