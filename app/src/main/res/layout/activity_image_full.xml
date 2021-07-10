@@ -9,13 +9,13 @@
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="match_parent"
-        android:layout_height="600dp"
+        android:layout_height="450dp"
         app:srcCompat="@drawable/ic_baseline_checkroom_24" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/textview1"
+        android:id="@+id/text_title"
         android:layout_below="@id/imageView"
         android:textSize="20sp"
         android:text="product_name"
@@ -23,8 +23,16 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/textview2"
-        android:layout_below="@id/textview1"
+        android:id="@+id/text_price"
+        android:layout_below="@id/text_title"
+        android:textSize="20sp"
+        android:text="price"
+        android:textStyle="bold" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/text_qty"
+        android:layout_below="@id/text_price"
         android:textSize="20sp"
         android:text="qty"
         android:textStyle="bold" />

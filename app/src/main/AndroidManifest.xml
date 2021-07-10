@@ -13,7 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Project2"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ImageFullActivity"></activity>
+        <activity android:name=".SubActivity2"></activity>
+         <activity android:name=".ImageFullActivity"></activity>
         <activity android:name=".SubActivity" />
         <activity android:name=".MainActivity2" />
         <activity android:name=".MainActivity">
