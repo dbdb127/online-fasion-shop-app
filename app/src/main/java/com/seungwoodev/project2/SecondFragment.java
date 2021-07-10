@@ -62,7 +62,7 @@ public class SecondFragment extends Fragment {
         qty.add(1);
         prices.add(12345);
 
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2, GridLayoutManager.VERTICAL, false);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 1, GridLayoutManager.VERTICAL, false);
 
         mRecyclerView.setAdapter(adapter);
 

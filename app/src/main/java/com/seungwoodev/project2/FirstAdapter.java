@@ -60,19 +60,22 @@ public class FirstAdapter extends RecyclerView.Adapter<FirstAdapter.MyViewHolder
             mTextView1 = itemView.findViewById(R.id.textview1);
             mTextView2 = itemView.findViewById(R.id.textview2);
 
-//            itemView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    Intent intent = new Intent(context ,ImageFullActivity.class);
-//                    int position = getAdapterPosition();
-//                    Bitmap sendBitmap = BitmapFactory.decodeResource(context.getResources(), images.get(position));
-//                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
-//                    sendBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-//                    byte[] byteArray = stream.toByteArray();
-//                    intent.putExtra("image",byteArray);
-//                    context.startActivity(intent);
-//                }
-//            });
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context ,ImageFullActivity.class);
+                    int position = getAdapterPosition();
+                    Bitmap sendBitmap = BitmapFactory.decodeResource(context.getResources(), images.get(position));
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    sendBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                    byte[] byteArray = stream.toByteArray();
+                    intent.putExtra("image",byteArray);
+                    intent.putExtra("title", "title");
+                    intent.putExtra("price", 1000);
+                    intent.putExtra("qty", 1);
+                    context.startActivity(intent);
+                }
+            });
         }
     }
 }
