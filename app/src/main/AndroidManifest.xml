@@ -13,11 +13,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Project2"
         android:usesCleartextTraffic="true">
-<<<<<<< HEAD
+
         <activity android:name=".SubActivity2"></activity>
          <activity android:name=".ImageFullActivity"></activity>
-=======
->>>>>>> 29b16b9a3863d78c169f270288a18dcfe2537dc6
+
         <activity android:name=".SubActivity" />
         <activity android:name=".MainActivity2" />
         <activity android:name=".MainActivity">

@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private ISessionCallback mSessionCallback;
     private Retrofit retrofit;
     private RetrofitInterface retrofitInterface;
-    private String BASE_URL = "http:192.249.18.167:80";
+    private String BASE_URL = "http:172.10.18.167";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

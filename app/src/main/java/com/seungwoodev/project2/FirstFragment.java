@@ -34,7 +34,7 @@ public class FirstFragment extends Fragment {
 
     private Retrofit retrofit;
     private ProductInterface productInterface;
-    private String BASE_URL = "http:172.10.18.176:80";
+    private String BASE_URL = "http:172.10.18.167";
 
     public FirstFragment() {
         // Required empty public constructor
@@ -99,6 +99,7 @@ public class FirstFragment extends Fragment {
 
             @Override
             public void onFailure(Call<ProductResult> call, Throwable t){
+                Log.d("failed", "connection "+call);
                 Toast.makeText(getActivity().getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
