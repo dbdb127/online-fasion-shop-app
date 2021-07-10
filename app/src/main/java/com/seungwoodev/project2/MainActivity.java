@@ -1,13 +1,19 @@
 package com.seungwoodev.project2;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
@@ -16,6 +22,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.Task;
 import com.kakao.auth.ISessionCallback;
 import com.kakao.auth.Session;
 import com.kakao.network.ErrorResult;
@@ -25,6 +38,13 @@ import com.kakao.usermgmt.callback.MeV2ResponseCallback;
 import com.kakao.usermgmt.response.MeV2Response;
 import com.kakao.util.exception.KakaoException;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.util.HashMap;
 
@@ -36,10 +56,15 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG = "MainActivity";
     private ISessionCallback mSessionCallback;
     private Retrofit retrofit;
     private RetrofitInterface retrofitInterface;
     private String BASE_URL = "http:192.249.18.167";
+    private GoogleSignInClient mGoogleSignInClient;
+    private int RC_SIGN_IN = 1;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(MeV2Response result) {
                         // Login Success
-                        Intent intent = new Intent(MainActivity.this, SubActivity.class);
+                        Intent intent = new Intent(MainActivity.this, SubActivity_Kakao.class);
                         intent.putExtra("name", result.getKakaoAccount().getProfile().getNickname());
                         intent.putExtra("profileImg", result.getKakaoAccount().getProfile().getProfileImageUrl());
                         intent.putExtra("email", result.getKakaoAccount().getEmail());
@@ -105,8 +130,8 @@ public class MainActivity extends AppCompatActivity {
         Session.getCurrentSession().addCallback(mSessionCallback);
         Session.getCurrentSession().checkAndImplicitOpen();
 
-        LoginButton btn_login = findViewById(R.id.btn_login);
-        btn_login.setOnClickListener(new View.OnClickListener(){
+        LoginButton btn_login_Kakao = findViewById(R.id.btn_login_Kakao);
+        btn_login_Kakao.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
 
@@ -114,7 +139,46 @@ public class MainActivity extends AppCompatActivity {
         });
 
 //        getAppKeyHash();
+
+
+
+
+        // Google login
+
+        // Configure sign-in to request the user's ID, email address, and basic
+        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+
+        // Build a GoogleSignInClient with the options specified by gso.
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+
+        // Set the dimensions of the sign-in button.
+        SignInButton btn_login_Google = findViewById(R.id.btn_login_Google);
+        btn_login_Google.setOnClickListener((view)->{
+            onClick(view);
+        });
+
     }
+
+    public void onClick(View v) {
+        switch(v.getId()) {
+            case R.id.btn_login_Google:
+                Log.d("Google_login", "success");
+                signIn();
+                break;
+        }
+    }
+
+    private void signIn() {
+        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+        startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
+
+
+
 
     //retrofit
     private void handleLoginDiaglog() {
@@ -141,7 +205,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onResponse(Call<LoginResult> call, retrofit2.Response<LoginResult> response) {
                         LoginResult result = response.body();
                         if(result.getCode()==200){
-                            Intent intent = new Intent(MainActivity.this, SubActivity2.class);
+                            Intent intent = new Intent(MainActivity.this, SubActivity_NotSDK.class);
                             intent.putExtra("name", result.getName());
 //                            intent.putExtra("profileImg", result.getKakaoAccount().getProfile().getProfileImageUrl());
                             intent.putExtra("email", result.getEmail());
@@ -229,10 +293,90 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable @org.jetbrains.annotations.Nullable Intent data) {
+        // Kakao login
         if (Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data))
             super.onActivityResult(requestCode, resultCode, data);
+
+        // Google login
+        if (requestCode == RC_SIGN_IN){
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            try {
+                handleSignInResult(task);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public byte[] getBytes(InputStream inputStream) throws IOException {
+        ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
+        int bufferSize = 1024;
+        byte[] buffer = new byte[bufferSize];
+
+        int len = 0;
+        while ((len = inputStream.read(buffer)) != -1) {
+            byteBuffer.write(buffer, 0, len);
+        }
+        return byteBuffer.toByteArray();
+    }
+    //Change UI according to user data.
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void updateUI(GoogleSignInAccount account) throws IOException {
+
+
+        if(account != null){
+            Toast.makeText(this,"U Signed In successfully",Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(this, SubActivity_Google.class);
+            intent.putExtra("email", account.getEmail());
+
+            if (account.getPhotoUrl() != null){
+                Uri uri = account.getPhotoUrl();
+                InputStream iStream =   getContentResolver().openInputStream(uri);
+                byte[] inputData = getBytes(iStream);
+                intent.putExtra("person_img", inputData);
+                Log.d("person_bit", inputData+"");
+
+            }
+
+            else{
+                Bitmap sendBitmap = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.person);
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                sendBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                byte[] byteArray = stream.toByteArray();
+                intent.putExtra("person_img", byteArray);
+            }
+            intent.putExtra("name", account.getDisplayName());
+
+            startActivity(intent);
+
+
+        }else {
+            Toast.makeText(this,"U Didnt signed in",Toast.LENGTH_LONG).show();
+        }
+
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) throws IOException {
+        try {
+            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+            // Signed in successfully, show authenticated UI.
+            String email = account.getEmail();
+            String m = account.getDisplayName();
+            Uri uri = account.getPhotoUrl();
+            Log.d("Name:", m);
+            Log.d("Email:", email);
+            Log.d("Photo:", uri+"");
+            updateUI(account);
+        } catch (ApiException | IOException e) {
+            // The ApiException status code indicates the detailed failure reason.
+            // Please refer to the GoogleSignInStatusCodes class reference for more information.
+            Log.w(TAG, "signInResult:failed code=");
+            updateUI(null);
+        }
     }
 
     @Override

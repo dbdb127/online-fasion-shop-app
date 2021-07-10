@@ -21,13 +21,18 @@
         android:layout_centerHorizontal="true"
         android:layout_below="@id/login"/>
 
-    <com.kakao.usermgmt.LoginButton
-        android:id="@+id/btn_login"
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/btn_login_Google"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:layout_above="@id/btn_login_Kakao">
+
+    </com.google.android.gms.common.SignInButton>
+
+    <com.kakao.usermgmt.LoginButton
+        android:id="@+id/btn_login_Kakao"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"/>
 
 </RelativeLayout>

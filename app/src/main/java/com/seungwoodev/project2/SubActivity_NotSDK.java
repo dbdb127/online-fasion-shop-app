@@ -6,15 +6,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.kakao.usermgmt.UserManagement;
-import com.kakao.usermgmt.callback.LogoutResponseCallback;
-
-public class SubActivity2 extends AppCompatActivity {
+public class SubActivity_NotSDK extends AppCompatActivity {
 
     private String strNick, strProfileImg, strEmail;
     private Button tab_button, logout_button;
@@ -22,7 +17,7 @@ public class SubActivity2 extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sub2);
+        setContentView(R.layout.activity_sub);
 
         Intent intent = getIntent();
         strNick = intent.getStringExtra("name");
@@ -47,8 +42,8 @@ public class SubActivity2 extends AppCompatActivity {
             @Override
             public void onClick(View view)
             {
-                Toast.makeText(SubActivity2.this,"Logout", Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(SubActivity2.this, MainActivity.class);
+                Toast.makeText(SubActivity_NotSDK.this,"Logout", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(SubActivity_NotSDK.this, MainActivity.class);
                 startActivity(intent);
             }
         });
@@ -59,7 +54,7 @@ public class SubActivity2 extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(SubActivity2.this, MainActivity2.class);
+                Intent intent = new Intent(SubActivity_NotSDK.this, MainActivity_Tab.class);
                 startActivity(intent);
             }
         });

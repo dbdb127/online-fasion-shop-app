@@ -2,16 +2,13 @@ package com.seungwoodev.project2;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
-import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.os.Bundle;
 
 import com.google.android.material.tabs.TabLayout;
 
-import java.util.ArrayList;
-
-public class MainActivity2 extends AppCompatActivity {
+public class MainActivity_Tab extends AppCompatActivity {
 
     TabLayout tabLayout;
     ViewPager2 pager2;
@@ -20,7 +17,7 @@ public class MainActivity2 extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main2);
+        setContentView(R.layout.activity_main_tab);
 
         tabLayout = findViewById(R.id.tab);
         pager2 = findViewById(R.id.viewPager2);
