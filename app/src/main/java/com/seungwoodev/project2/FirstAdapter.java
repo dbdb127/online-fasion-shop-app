@@ -1,6 +1,9 @@
 package com.seungwoodev.project2;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,16 +13,17 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.ByteArrayOutputStream;
 import java.util.List;
 
-public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
+public class FirstAdapter extends RecyclerView.Adapter<FirstAdapter.MyViewHolder> {
 
-    private Context context;
+    private static Context context;
     private List<String> titles;
     private List<Integer> prices;
-    private List<Integer> images;
+    private static List<Integer> images;
 
-    public MyAdapter(Context context, List<String> titles, List<Integer> prices, List<Integer> images){
+    public FirstAdapter(Context context, List<String> titles, List<Integer> prices, List<Integer> images){
         this.context = context;
         this.titles = titles;
         this.prices = prices;
@@ -56,12 +60,19 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
             mTextView1 = itemView.findViewById(R.id.textview1);
             mTextView2 = itemView.findViewById(R.id.textview2);
 
-//            itemView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//
-//                }
-//            });
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context ,ImageFullActivity.class);
+                    int position = getAdapterPosition();
+                    Bitmap sendBitmap = BitmapFactory.decodeResource(context.getResources(), images.get(position));
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    sendBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                    byte[] byteArray = stream.toByteArray();
+                    intent.putExtra("image",byteArray);
+                    context.startActivity(intent);
+                }
+            });
         }
     }
 }

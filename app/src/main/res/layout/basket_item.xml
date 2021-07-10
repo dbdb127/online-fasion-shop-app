@@ -23,30 +23,42 @@
             android:layout_height="match_parent"
             android:orientation="horizontal">
             <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="300dp"
-                app:srcCompat="@drawable/ic_baseline_checkroom_24"
-                android:layout_centerHorizontal="true"
                 android:id="@+id/imageview"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                app:srcCompat="@drawable/ic_baseline_checkroom_24"
                 android:padding="15dp" />
+
             <TextView
+                android:id="@+id/text_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/textview1"
-                android:layout_below="@id/imageview"
+                android:layout_toRightOf="@id/imageview"
+                android:layout_marginLeft="10dp"
                 android:textSize="20sp"
                 android:text="product_name"
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/text_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/textview2"
-                android:layout_below="@id/imageview"
-                android:textSize="20sp"
+                android:layout_below="@id/text_title"
+                android:layout_alignParentRight="true"
                 android:text="price"
-                android:textStyle="bold"
-                android:layout_alignParentRight="true"/>
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/text_qty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/text_price"
+                android:layout_alignParentRight="true"
+                android:text="qty"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
 
         </RelativeLayout>
 

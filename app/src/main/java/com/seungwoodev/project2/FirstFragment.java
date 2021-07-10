@@ -21,7 +21,7 @@ public class FirstFragment extends Fragment {
     private List<String> titles;
     private List<Integer> prices;
     private List<Integer> mImages;
-    private MyAdapter adapter;
+    private FirstAdapter adapter;
 
     public FirstFragment() {
         // Required empty public constructor
@@ -50,9 +50,9 @@ public class FirstFragment extends Fragment {
 
         titles = new ArrayList<>();
         prices = new ArrayList<Integer>();
-        mImages = new ArrayList<>();
+        mImages = new ArrayList<Integer>();
 
-        adapter = new MyAdapter(getActivity().getApplicationContext(), titles, prices, mImages);
+        adapter = new FirstAdapter(getActivity().getApplicationContext(), titles, prices, mImages);
 
         //product list
         mImages.add(R.drawable.ic_baseline_checkroom_24);
