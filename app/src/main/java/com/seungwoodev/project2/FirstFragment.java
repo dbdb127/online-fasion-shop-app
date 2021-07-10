@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import retrofit2.Call;
@@ -26,15 +27,15 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class FirstFragment extends Fragment {
     private RecyclerView mRecyclerView;
-    private List<String> names;
-    private List<Integer> prices;
-    private List<Integer> qty;
-    private List<Integer> mImages;
+    public List<String> names;
+    public List<Integer> prices;
+    public List<Integer> qty;
+    public List<Integer> mImages;
     private FirstAdapter adapter;
 
     private Retrofit retrofit;
     private ProductInterface productInterface;
-    private String BASE_URL = "http:172.10.18.167";
+    private String BASE_URL = "http:192.249.18.167";
 
     public FirstFragment() {
         // Required empty public constructor
@@ -66,13 +67,6 @@ public class FirstFragment extends Fragment {
         mImages = new ArrayList<Integer>();
         qty = new ArrayList<Integer>();
 
-        adapter = new FirstAdapter(getActivity().getApplicationContext(), names, prices, mImages);
-
-        //product list
-        mImages.add(R.drawable.ic_baseline_checkroom_24);
-        names.add("temp");
-        prices.add(12345);
-
         //get titles, prices, qty from database
         retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
@@ -87,10 +81,23 @@ public class FirstFragment extends Fragment {
             public void onResponse(Call<ProductResult> call, retrofit2.Response<ProductResult> response) {
                 ProductResult result = response.body();
                 if(result.getCode()==200){
-                    names = result.getName();
+                    names = result.getName();   //ArrayList
                     prices = result.getPrice();
                     qty = result.getQty();
-                    Log.d("GET product list", names+"");
+
+                    for(int i=0;i<names.size();i++){
+                        mImages.add(R.drawable.a);
+//                        Log.d("kyung", names.get(i));
+                    }
+
+                    adapter = new FirstAdapter(getActivity().getApplicationContext(), names, prices, mImages);
+
+                    GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2, GridLayoutManager.VERTICAL, false);
+
+                    mRecyclerView.setAdapter(adapter);
+
+                    mRecyclerView.setLayoutManager(gridLayoutManager);
+                    mRecyclerView.setHasFixedSize(true);
 
                 }else if(result.getCode()==404){
                     Toast.makeText(getActivity().getApplicationContext(),"No Products", Toast.LENGTH_LONG).show();
@@ -103,14 +110,5 @@ public class FirstFragment extends Fragment {
                 Toast.makeText(getActivity().getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
-
-
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2, GridLayoutManager.VERTICAL, false);
-
-        mRecyclerView.setAdapter(adapter);
-
-        mRecyclerView.setLayoutManager(gridLayoutManager);
-        mRecyclerView.setHasFixedSize(true);
-
     }
 }
