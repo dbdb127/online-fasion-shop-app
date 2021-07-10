@@ -69,9 +69,17 @@ public class FirstFragment extends Fragment {
         adapter = new FirstAdapter(getActivity().getApplicationContext(), names, prices, mImages);
 
         //product list
-        mImages.add(R.drawable.ic_baseline_checkroom_24);
-        names.add("temp");
-        prices.add(12345);
+//        mImages.add(R.drawable.ic_baseline_checkroom_24);
+//        names.add("temp");
+//        prices.add(12345);
+//
+//        mImages.add(R.drawable.ic_baseline_checkroom_24);
+//        names.add("temp");
+//        prices.add(12345);
+//
+//        mImages.add(R.drawable.ic_baseline_checkroom_24);
+//        names.add("temp");
+//        prices.add(12345);
 
         //get titles, prices, qty from database
         retrofit = new Retrofit.Builder()
