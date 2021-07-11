@@ -16,17 +16,21 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.io.ByteArrayOutputStream;
 import java.util.List;
 
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+
 public class FirstAdapter extends RecyclerView.Adapter<FirstAdapter.MyViewHolder> {
 
     private static Context context;
     private List<String> titles;
     private List<Integer> prices;
+    private List<Integer> qty;
     private static List<Integer> images;
 
-    public FirstAdapter(Context context, List<String> titles, List<Integer> prices, List<Integer> images){
+    public FirstAdapter(Context context, List<String> titles, List<Integer> prices, List<Integer> qty, List<Integer> images){
         this.context = context;
         this.titles = titles;
         this.prices = prices;
+        this.qty = qty;
         this.images = images;
     }
 
@@ -49,7 +53,7 @@ public class FirstAdapter extends RecyclerView.Adapter<FirstAdapter.MyViewHolder
         return titles.size();
     }
 
-    public static class MyViewHolder extends RecyclerView.ViewHolder{
+    public class MyViewHolder extends RecyclerView.ViewHolder{
         ImageView mImageView;
         TextView mTextView1, mTextView2;
 
@@ -70,10 +74,10 @@ public class FirstAdapter extends RecyclerView.Adapter<FirstAdapter.MyViewHolder
                     sendBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
                     byte[] byteArray = stream.toByteArray();
                     intent.putExtra("image",byteArray);
-                    intent.putExtra("title", "title");
-                    intent.putExtra("price", 1000);
-                    intent.putExtra("qty", 1);
-                    context.startActivity(intent);
+                    intent.putExtra("title", titles.get(position));
+                    intent.putExtra("price", prices.get(position));
+                    intent.putExtra("qty", qty.get(position));
+                    context.startActivity(intent.addFlags(FLAG_ACTIVITY_NEW_TASK));
                 }
             });
         }

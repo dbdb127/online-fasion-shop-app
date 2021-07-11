@@ -5,7 +5,6 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
-import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -39,12 +38,8 @@ import com.kakao.usermgmt.response.MeV2Response;
 import com.kakao.util.exception.KakaoException;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
-import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.util.HashMap;
 
@@ -63,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
     private String BASE_URL = "http:192.249.18.167";
     private GoogleSignInClient mGoogleSignInClient;
     private int RC_SIGN_IN = 1;
-
 
 
     @Override
@@ -141,8 +135,6 @@ public class MainActivity extends AppCompatActivity {
 //        getAppKeyHash();
 
 
-
-
         // Google login
 
         // Configure sign-in to request the user's ID, email address, and basic
@@ -161,7 +153,9 @@ public class MainActivity extends AppCompatActivity {
             onClick(view);
         });
 
+
     }
+
 
     public void onClick(View v) {
         switch(v.getId()) {

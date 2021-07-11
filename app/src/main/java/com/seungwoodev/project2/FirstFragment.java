@@ -34,7 +34,7 @@ public class FirstFragment extends Fragment {
     private FirstAdapter adapter;
 
     private Retrofit retrofit;
-    private ProductInterface productInterface;
+    private RetrofitInterface retrofitInterface;
     private String BASE_URL = "http:192.249.18.167";
 
     public FirstFragment() {
@@ -64,23 +64,8 @@ public class FirstFragment extends Fragment {
 
         names = new ArrayList<>();
         prices = new ArrayList<Integer>();
-        mImages = new ArrayList<Integer>();
         qty = new ArrayList<Integer>();
-
-        adapter = new FirstAdapter(getActivity().getApplicationContext(), names, prices, mImages);
-
-        //product list
-//        mImages.add(R.drawable.ic_baseline_checkroom_24);
-//        names.add("temp");
-//        prices.add(12345);
-//
-//        mImages.add(R.drawable.ic_baseline_checkroom_24);
-//        names.add("temp");
-//        prices.add(12345);
-//
-//        mImages.add(R.drawable.ic_baseline_checkroom_24);
-//        names.add("temp");
-//        prices.add(12345);
+        mImages = new ArrayList<Integer>();
 
         //get titles, prices, qty from database
         retrofit = new Retrofit.Builder()
@@ -88,8 +73,8 @@ public class FirstFragment extends Fragment {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        productInterface = retrofit.create(ProductInterface.class);
-        Call<ProductResult> call = productInterface.getProduct();
+        retrofitInterface = retrofit.create(RetrofitInterface.class);
+        Call<ProductResult> call = retrofitInterface.getProduct();
 
         call.enqueue(new Callback<ProductResult>(){
             @Override
@@ -105,7 +90,7 @@ public class FirstFragment extends Fragment {
 //                        Log.d("kyung", names.get(i));
                     }
 
-                    adapter = new FirstAdapter(getActivity().getApplicationContext(), names, prices, mImages);
+                    adapter = new FirstAdapter(getActivity().getApplicationContext(), names, prices, qty, mImages);
 
                     GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2, GridLayoutManager.VERTICAL, false);
 
@@ -115,14 +100,14 @@ public class FirstFragment extends Fragment {
                     mRecyclerView.setHasFixedSize(true);
 
                 }else if(result.getCode()==404){
-                    Toast.makeText(getActivity().getApplicationContext(),"No Products", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity().getApplicationContext(),"No Products", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ProductResult> call, Throwable t){
                 Log.d("failed", "connection "+call);
-                Toast.makeText(getActivity().getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity().getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

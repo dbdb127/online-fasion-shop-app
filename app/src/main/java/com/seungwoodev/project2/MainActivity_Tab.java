@@ -4,12 +4,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.tabs.TabLayout;
 
 public class MainActivity_Tab extends AppCompatActivity {
 
+    private static String strEmail;
+    private String fragmentTransaction;
     TabLayout tabLayout;
     ViewPager2 pager2;
     FragmentAdapter adapter;
@@ -18,6 +21,10 @@ public class MainActivity_Tab extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_tab);
+
+        Intent intent = getIntent();
+        strEmail = intent.getStringExtra("email");
+        fragmentTransaction = intent.getStringExtra("cart");
 
         tabLayout = findViewById(R.id.tab);
         pager2 = findViewById(R.id.viewPager2);
@@ -55,5 +62,9 @@ public class MainActivity_Tab extends AppCompatActivity {
                 tabLayout.selectTab(tabLayout.getTabAt(position));
             }
         });
+    }
+
+    public static String getUser(){
+        return strEmail;
     }
 }

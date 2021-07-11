@@ -14,6 +14,14 @@ import com.bumptech.glide.Glide;
 import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.LogoutResponseCallback;
 
+import java.util.HashMap;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class SubActivity_Kakao extends AppCompatActivity {
 
     private String strNick, strProfileImg, strEmail;
@@ -28,6 +36,40 @@ public class SubActivity_Kakao extends AppCompatActivity {
         strNick = intent.getStringExtra("name");
         strProfileImg = intent.getStringExtra("profileImg");
         strEmail = intent.getStringExtra("email");
+
+        //sign up or log in
+        Retrofit retrofit;
+        RetrofitInterface retrofitInterface;
+        String BASE_URL = "http:192.249.18.167:80";
+
+        retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        retrofitInterface = retrofit.create(RetrofitInterface.class);
+        HashMap<String, String> map = new HashMap<>();
+
+        map.put("email", strEmail);
+        map.put("name", strNick);
+
+        Call<Void> call = retrofitInterface.checkUser(map);
+
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if(response.code()==200){
+                }else if(response.code() ==400){
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Toast.makeText(SubActivity_Kakao.this, t.getMessage(),
+                        Toast.LENGTH_LONG).show();
+            }
+        });
+
 
         TextView tv_nick = findViewById(R.id.tv_nickName);
         TextView tv_email = findViewById(R.id.tv_email);
@@ -61,10 +103,11 @@ public class SubActivity_Kakao extends AppCompatActivity {
         // when click, go to the tab
         tab_button = (Button)findViewById(R.id.btn_tab);
         tab_button.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(SubActivity_Kakao.this, MainActivity_Tab.class);
+                intent.putExtra("email", strEmail);
+                intent.putExtra("cart", "no");
                 startActivity(intent);
             }
         });

@@ -55,6 +55,8 @@ public class SubActivity_NotSDK extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(SubActivity_NotSDK.this, MainActivity_Tab.class);
+                intent.putExtra("email", strEmail);
+                intent.putExtra("cart", "no");
                 startActivity(intent);
             }
         });
