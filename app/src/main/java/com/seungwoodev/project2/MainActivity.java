@@ -1,9 +1,5 @@
 package com.seungwoodev.project2;
 
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -20,6 +16,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -141,6 +141,7 @@ public class MainActivity extends AppCompatActivity {
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
+                .requestProfile()
                 .build();
 
         // Build a GoogleSignInClient with the options specified by gso.
@@ -196,7 +197,7 @@ public class MainActivity extends AppCompatActivity {
 
                 call.enqueue(new Callback<LoginResult>(){
                     @Override
-                    public void onResponse(Call<LoginResult> call, retrofit2.Response<LoginResult> response) {
+                    public void onResponse(Call<LoginResult> call, Response<LoginResult> response) {
                         LoginResult result = response.body();
                         if(result.getCode()==200){
                             Intent intent = new Intent(MainActivity.this, SubActivity_NotSDK.class);
@@ -325,17 +326,21 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this,"U Signed In successfully",Toast.LENGTH_LONG).show();
             Intent intent = new Intent(this, SubActivity_Google.class);
             intent.putExtra("email", account.getEmail());
+            Log.d("account:", "not null");
 
             if (account.getPhotoUrl() != null){
+                Log.d("person_bit0", "");
                 Uri uri = account.getPhotoUrl();
-                InputStream iStream =   getContentResolver().openInputStream(uri);
-                byte[] inputData = getBytes(iStream);
-                intent.putExtra("person_img", inputData);
-                Log.d("person_bit", inputData+"");
+//                InputStream iStream =   getContentResolver().openInputStream(uri);
+//                byte[] inputData = getBytes(iStream);
+                intent.putExtra("img_url", uri);
+
+//                Log.d("person_bit", inputData+"");
 
             }
 
             else{
+                Log.d("account photo", "null");
                 Bitmap sendBitmap = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.person);
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
                 sendBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
@@ -343,11 +348,13 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("person_img", byteArray);
             }
             intent.putExtra("name", account.getDisplayName());
+            Log.d("DisplayName:", account.getDisplayName()+"");
 
             startActivity(intent);
 
 
         }else {
+            Log.d("account: ", "null");
             Toast.makeText(this,"U Didnt signed in",Toast.LENGTH_LONG).show();
         }
 
@@ -361,14 +368,14 @@ public class MainActivity extends AppCompatActivity {
             String email = account.getEmail();
             String m = account.getDisplayName();
             Uri uri = account.getPhotoUrl();
-            Log.d("Name:", m);
-            Log.d("Email:", email);
+            Log.d("Name:", m+"");
+            Log.d("Email:", email+"");
             Log.d("Photo:", uri+"");
             updateUI(account);
         } catch (ApiException | IOException e) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
-            Log.w(TAG, "signInResult:failed code=");
+            Log.w(TAG, "signInResult:failed code="+e);
             updateUI(null);
         }
     }
