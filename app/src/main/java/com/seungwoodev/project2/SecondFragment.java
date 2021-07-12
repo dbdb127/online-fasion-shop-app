@@ -60,71 +60,71 @@ public class SecondFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mRecyclerView = view.findViewById(R.id.recyclerview);
-
-        names = new ArrayList<>();
-        prices = new ArrayList<Integer>();
-        qty = new ArrayList<Integer>();
-        mImages = new ArrayList<>();
-
-        //product list
-        mImages.add(R.drawable.ic_baseline_checkroom_24);
-        names.add("temp");
-        qty.add(1);
-        prices.add(12345);
-
-        //db에서 basket 가져오기
-        Retrofit retrofit;
-        RetrofitInterface retrofitInterface;
-        String BASE_URL = "http:192.249.18.167:80";
-
-        retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        retrofitInterface = retrofit.create(RetrofitInterface.class);
-
-        HashMap<String, String> map = new HashMap<>();
-
-        map.put("email", MainActivity_Tab.getUser());
-
-        Call<ProductResult> call = retrofitInterface.getBasket(map);
-
-        call.enqueue(new Callback<ProductResult>(){
-            @Override
-            public void onResponse(Call<ProductResult> call, retrofit2.Response<ProductResult> response) {
-                if(response.code()==200){
-                    ProductResult result = response.body();
-                    names = result.getName();   //ArrayList
-                    prices = result.getPrice();
-                    qty = result.getQty();
-
-                    for(int i=0;i<names.size();i++){
-                        mImages.add(R.drawable.a);
-//                        Log.d("kyung", names.get(i));
-                    }
-
-                    adapter = new BasketAdapter(getActivity().getApplicationContext(), names, prices, qty, mImages);
-
-                    GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 1, GridLayoutManager.VERTICAL, false);
-
-                    mRecyclerView.setAdapter(adapter);
-
-                    mRecyclerView.setLayoutManager(gridLayoutManager);
-                    mRecyclerView.setHasFixedSize(true);
-
-                }else if(response.code()==404){
-                    Toast.makeText(getActivity().getApplicationContext(),"No Products", Toast.LENGTH_LONG).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ProductResult> call, Throwable t){
-                Log.d("failed", "connection "+call);
-                Toast.makeText(getActivity().getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        });
+//        mRecyclerView = view.findViewById(R.id.recyclerview);
+//
+//        names = new ArrayList<>();
+//        prices = new ArrayList<Integer>();
+//        qty = new ArrayList<Integer>();
+//        mImages = new ArrayList<>();
+//
+//        //product list
+//        mImages.add(R.drawable.ic_baseline_checkroom_24);
+//        names.add("temp");
+//        qty.add(1);
+//        prices.add(12345);
+//
+//        //db에서 basket 가져오기
+//        Retrofit retrofit;
+//        RetrofitInterface retrofitInterface;
+//        String BASE_URL = "http:192.249.18.167:80";
+//
+//        retrofit = new Retrofit.Builder()
+//                .baseUrl(BASE_URL)
+//                .addConverterFactory(GsonConverterFactory.create())
+//                .build();
+//
+//        retrofitInterface = retrofit.create(RetrofitInterface.class);
+//
+//        HashMap<String, String> map = new HashMap<>();
+//
+//        map.put("email", MainActivity_Tab.getUser());
+//
+//        Call<ProductResult> call = retrofitInterface.getBasket(map);
+//
+//        call.enqueue(new Callback<ProductResult>(){
+//            @Override
+//            public void onResponse(Call<ProductResult> call, retrofit2.Response<ProductResult> response) {
+//                if(response.code()==200){
+//                    ProductResult result = response.body();
+//                    names = result.getName();   //ArrayList
+//                    prices = result.getPrice();
+//                    qty = result.getQty();
+//
+//                    for(int i=0;i<names.size();i++){
+//                        mImages.add(R.drawable.a);
+////                        Log.d("kyung", names.get(i));
+//                    }
+//
+//                    adapter = new BasketAdapter(getActivity().getApplicationContext(), names, prices, qty, mImages);
+//
+//                    GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 1, GridLayoutManager.VERTICAL, false);
+//
+//                    mRecyclerView.setAdapter(adapter);
+//
+//                    mRecyclerView.setLayoutManager(gridLayoutManager);
+//                    mRecyclerView.setHasFixedSize(true);
+//
+//                }else if(response.code()==404){
+//                    Toast.makeText(getActivity().getApplicationContext(),"No Products", Toast.LENGTH_LONG).show();
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<ProductResult> call, Throwable t){
+//                Log.d("failed", "connection "+call);
+//                Toast.makeText(getActivity().getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG).show();
+//            }
+//        });
 
     }
 }

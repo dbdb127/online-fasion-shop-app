@@ -109,7 +109,8 @@ public class MainActivity extends AppCompatActivity {
                         // Login Success
                         Intent intent = new Intent(MainActivity.this, SubActivity_Kakao.class);
                         intent.putExtra("name", result.getKakaoAccount().getProfile().getNickname());
-                        intent.putExtra("profileImg", result.getKakaoAccount().getProfile().getProfileImageUrl());
+                        intent.putExtra("image", Uri.parse(result.getKakaoAccount().getProfile().getProfileImageUrl()));
+                        Log.d("KakaoProfile", result.getKakaoAccount().getProfile().getProfileImageUrl()+"");
                         intent.putExtra("email", result.getKakaoAccount().getEmail());
                         startActivity(intent);
 

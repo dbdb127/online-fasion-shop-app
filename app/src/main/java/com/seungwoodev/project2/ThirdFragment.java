@@ -14,6 +14,8 @@ import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 
 import java.util.List;
 
@@ -57,9 +59,19 @@ public class ThirdFragment extends Fragment {
         email_view.setText(email);
 
         ImageView image_view = getView().findViewById(R.id.profile_img);
-        Glide.with(getActivity().getApplicationContext())
-                .load(MainActivity_Tab.getImage())
-                .into(image_view);
+
+        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getActivity().getApplicationContext());
+        if (acct != null) {
+            Uri profileUrl = acct.getPhotoUrl();
+            Glide.with(getActivity().getApplicationContext()).load(profileUrl).into(image_view);
+            Log.d("GoogleProfile", profileUrl+"");
+        }
+
+        else {
+            Glide.with(getActivity().getApplicationContext())
+                    .load(MainActivity_Tab.getImage())
+                    .into(image_view);
+        }
         Log.d("name", name);
         Log.d("email", email);
 

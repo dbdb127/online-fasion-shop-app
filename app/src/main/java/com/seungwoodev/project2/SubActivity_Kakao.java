@@ -3,7 +3,9 @@ package com.seungwoodev.project2;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -24,17 +26,20 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class SubActivity_Kakao extends AppCompatActivity {
 
-    private String strNick, strProfileImg, strEmail;
+    private String strNick, strEmail;
+    private Uri ProfileImg;
     private Button tab_button, logout_button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        Log.d("onCreate", "Start1");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sub);
 
         Intent intent = getIntent();
         strNick = intent.getStringExtra("name");
-        strProfileImg = intent.getStringExtra("profileImg");
+        ProfileImg = intent.getParcelableExtra("image");
         strEmail = intent.getStringExtra("email");
 
         //sign up or log in
@@ -54,6 +59,7 @@ public class SubActivity_Kakao extends AppCompatActivity {
         map.put("name", strNick);
 
         Call<Void> call = retrofitInterface.checkUser(map);
+        Log.d("onCreate", "Start2");
 
         call.enqueue(new Callback<Void>() {
             @Override
@@ -66,9 +72,10 @@ public class SubActivity_Kakao extends AppCompatActivity {
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
                 Toast.makeText(SubActivity_Kakao.this, t.getMessage(),
-                        Toast.LENGTH_LONG).show();
+                        Toast.LENGTH_SHORT).show();
             }
         });
+        Log.d("onCreate", "Start3");
 
 
         TextView tv_nick = findViewById(R.id.tv_nickName);
@@ -80,7 +87,8 @@ public class SubActivity_Kakao extends AppCompatActivity {
         // set email
         tv_email.setText(strEmail);
         // set profile image
-        Glide.with(this).load(strProfileImg).into(iv_profile);
+        Glide.with(this).load(ProfileImg).into(iv_profile);
+        Log.d("profileImgGlide", ProfileImg+"");
 
         // log out
         logout_button = (Button)findViewById(R.id.btn_logout);
@@ -89,7 +97,7 @@ public class SubActivity_Kakao extends AppCompatActivity {
             @Override
             public void onClick(View view)
             {
-                Toast.makeText(SubActivity_Kakao.this,"Logout", Toast.LENGTH_LONG).show();
+                Toast.makeText(SubActivity_Kakao.this,"Logout", Toast.LENGTH_SHORT).show();
                 UserManagement.getInstance().requestLogout(new LogoutResponseCallback() {
                     @Override
                     public void onCompleteLogout() {
@@ -108,11 +116,7 @@ public class SubActivity_Kakao extends AppCompatActivity {
                 Intent intent = new Intent(SubActivity_Kakao.this, MainActivity_Tab.class);
                 intent.putExtra("email", strEmail);
                 intent.putExtra("name", strNick);
-                if(strProfileImg == null){
-                    intent.putExtra("image", R.drawable.person);
-                }else{
-                    intent.putExtra("image", strProfileImg);
-                }
+                intent.putExtra("image", ProfileImg);
                 startActivity(intent);
             }
         });
