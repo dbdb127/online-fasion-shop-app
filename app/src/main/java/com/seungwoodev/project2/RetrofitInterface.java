@@ -41,5 +41,11 @@ public interface RetrofitInterface {
     @POST("/upload")
     Call<ResponseBody> postImage(@Part MultipartBody.Part image, @Part("upload") RequestBody name);
 
+    @POST("/product_name")
+    Call<SimpleProductResult> getSimpleProduct(@Body HashMap<String, String> map);
+
+    @GET("/product_best")
+    Call<AllProductResult> getAllProduct();
+
 
 }

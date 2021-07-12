@@ -1,6 +1,7 @@
 package com.seungwoodev.project2;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -43,7 +44,6 @@ public class ImageFullActivity extends AppCompatActivity {
 
         strTitle = intent.getStringExtra("title");
         intPrice = intent.getIntExtra("price", 10000);
-        intQty = intent.getIntExtra("qty", 3);
 
         TextView text_title = findViewById(R.id.text_title);
         TextView text_price = findViewById(R.id.text_price);
@@ -77,6 +77,43 @@ public class ImageFullActivity extends AppCompatActivity {
             }
         });
 
+        //intQty db에서 받아오기
+        Retrofit retrofit;
+        RetrofitInterface retrofitInterface;
+        String BASE_URL = "http:192.249.18.167:80";
+
+        retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        retrofitInterface = retrofit.create(RetrofitInterface.class);
+        HashMap<String, String> map = new HashMap<>();
+        map.put("name", strTitle);
+        Call<SimpleProductResult> call = retrofitInterface.getSimpleProduct(map);
+        call.enqueue(new Callback<SimpleProductResult>(){
+            @Override
+            public void onResponse(Call<SimpleProductResult> call, retrofit2.Response<SimpleProductResult> response) {
+                if(response.code()==200){
+                    SimpleProductResult result = response.body();
+                    intQty = result.getQty();   //ArrayList
+
+                    text_title.setText(strTitle);
+                    text_price.setText(intPrice+"");
+                    text_qty.setText(intQty+"");
+
+                }else if(response.code()==404){
+                    Toast.makeText(ImageFullActivity.this,"No Products", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SimpleProductResult> call, Throwable t){
+                Log.d("failed", "connection "+call);
+                Toast.makeText(ImageFullActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
         cart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -105,7 +142,7 @@ public class ImageFullActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<Void> call, Response<Void> response) {
                         if(response.code()==200){
-                            Log.d("kyung", "1");
+//                            Log.d("kyung", "1");
                             AlertDialog.Builder builder = new AlertDialog.Builder(ImageFullActivity.this)
                                     .setMessage("Do you want to see your cart?")
                                     .setTitle("Add to Cart")
@@ -120,7 +157,42 @@ public class ImageFullActivity extends AppCompatActivity {
                                     .setNegativeButton("No", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
+                                            //intQty db에서 받아오기
+                                            Retrofit retrofit;
+                                            RetrofitInterface retrofitInterface;
+                                            String BASE_URL = "http:192.249.18.167:80";
 
+                                            retrofit = new Retrofit.Builder()
+                                                    .baseUrl(BASE_URL)
+                                                    .addConverterFactory(GsonConverterFactory.create())
+                                                    .build();
+
+                                            retrofitInterface = retrofit.create(RetrofitInterface.class);
+                                            HashMap<String, String> map = new HashMap<>();
+                                            map.put("name", strTitle);
+                                            Call<SimpleProductResult> call = retrofitInterface.getSimpleProduct(map);
+                                            call.enqueue(new Callback<SimpleProductResult>(){
+                                                @Override
+                                                public void onResponse(Call<SimpleProductResult> call, retrofit2.Response<SimpleProductResult> response) {
+                                                    if(response.code()==200){
+                                                        SimpleProductResult result = response.body();
+                                                        intQty = result.getQty();   //ArrayList
+
+                                                        text_title.setText(strTitle);
+                                                        text_price.setText(intPrice+"");
+                                                        text_qty.setText(intQty+"");
+
+                                                    }else if(response.code()==404){
+                                                        Toast.makeText(ImageFullActivity.this,"No Products", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                }
+
+                                                @Override
+                                                public void onFailure(Call<SimpleProductResult> call, Throwable t){
+                                                    Log.d("failed", "connection "+call);
+                                                    Toast.makeText(ImageFullActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
                                         }
                                     });
 
@@ -141,8 +213,5 @@ public class ImageFullActivity extends AppCompatActivity {
             }
         });
 
-        text_title.setText(strTitle);
-        text_price.setText(intPrice+"");
-        text_qty.setText(intQty+"");
     }
 }

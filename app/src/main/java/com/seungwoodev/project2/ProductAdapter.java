@@ -77,7 +77,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
                     intent.putExtra("image",byteArray);
                     intent.putExtra("title", titles.get(position));
                     intent.putExtra("price", prices.get(position));
-                    intent.putExtra("qty", qty.get(position));
                     context.startActivity(intent.addFlags(FLAG_ACTIVITY_NEW_TASK));
                 }
             });

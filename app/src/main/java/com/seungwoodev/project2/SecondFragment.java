@@ -1,5 +1,6 @@
 package com.seungwoodev.project2;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,10 +9,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,14 +29,15 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class SecondFragment extends Fragment {
     private RecyclerView mRecyclerView;
-    private List<String> names;
-    private List<Integer> prices;
-    private List<Integer> qty;
-    private List<Integer> mImages;
-    private BasketAdapter adapter;
+    private ArrayList<Product_Best> bestList;
+    private BestAdapter adapter;
+
+    private Retrofit retrofit;
+    private RetrofitInterface retrofitInterface;
+    private String BASE_URL = "http:192.249.18.167";
 
     //이미지 뷰 5장
-    ImageView image1, image2, image3, image4, image5;
+//    ImageView image1, image2, image3, image4, image5;
 
     public SecondFragment() {
         // Required empty public constructor
@@ -43,8 +47,6 @@ public class SecondFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
     }
 
 
@@ -53,78 +55,82 @@ public class SecondFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_second, container, false);
+        return inflater.inflate(R.layout.activity_product, container, false);
+    }
+
+
+//    @RequiresApi(api = Build.VERSION_CODES.N)
+//    public static void sort(ArrayList<Product_Best> list){
+//        list.sort((o1, o2)->Product_Best.compare(o1, o2));
+//    }
+
+    public void sort(ArrayList<Product_Best> arg){
+
+        for(int i=0; i<arg.size(); i++){
+            Product_Best temp;
+            for(int j=0; j<i; j++){
+                if(Product_Best.compare(arg.get(j), arg.get(i))){
+                    temp = arg.get(i);
+                    arg.set(i, arg.get(j));
+                    arg.set(j, temp);
+                }
+            }
+        }
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-//        mRecyclerView = view.findViewById(R.id.recyclerview);
-//
-//        names = new ArrayList<>();
-//        prices = new ArrayList<Integer>();
-//        qty = new ArrayList<Integer>();
-//        mImages = new ArrayList<>();
-//
-//        //product list
-//        mImages.add(R.drawable.ic_baseline_checkroom_24);
-//        names.add("temp");
-//        qty.add(1);
-//        prices.add(12345);
-//
-//        //db에서 basket 가져오기
-//        Retrofit retrofit;
-//        RetrofitInterface retrofitInterface;
-//        String BASE_URL = "http:192.249.18.167:80";
-//
-//        retrofit = new Retrofit.Builder()
-//                .baseUrl(BASE_URL)
-//                .addConverterFactory(GsonConverterFactory.create())
-//                .build();
-//
-//        retrofitInterface = retrofit.create(RetrofitInterface.class);
-//
-//        HashMap<String, String> map = new HashMap<>();
-//
-//        map.put("email", MainActivity_Tab.getUser());
-//
-//        Call<ProductResult> call = retrofitInterface.getBasket(map);
-//
-//        call.enqueue(new Callback<ProductResult>(){
-//            @Override
-//            public void onResponse(Call<ProductResult> call, retrofit2.Response<ProductResult> response) {
-//                if(response.code()==200){
-//                    ProductResult result = response.body();
-//                    names = result.getName();   //ArrayList
-//                    prices = result.getPrice();
-//                    qty = result.getQty();
-//
-//                    for(int i=0;i<names.size();i++){
-//                        mImages.add(R.drawable.a);
-////                        Log.d("kyung", names.get(i));
-//                    }
-//
-//                    adapter = new BasketAdapter(getActivity().getApplicationContext(), names, prices, qty, mImages);
-//
-//                    GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 1, GridLayoutManager.VERTICAL, false);
-//
-//                    mRecyclerView.setAdapter(adapter);
-//
-//                    mRecyclerView.setLayoutManager(gridLayoutManager);
-//                    mRecyclerView.setHasFixedSize(true);
-//
-//                }else if(response.code()==404){
-//                    Toast.makeText(getActivity().getApplicationContext(),"No Products", Toast.LENGTH_LONG).show();
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<ProductResult> call, Throwable t){
-//                Log.d("failed", "connection "+call);
-//                Toast.makeText(getActivity().getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG).show();
-//            }
-//        });
+        mRecyclerView = view.findViewById(R.id.recyclerview);
+
+        bestList = new ArrayList<Product_Best>();
+
+        //db에서 all products 가져오기
+        Retrofit retrofit;
+        RetrofitInterface retrofitInterface;
+        String BASE_URL = "http:192.249.18.167:80";
+
+        retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        retrofitInterface = retrofit.create(RetrofitInterface.class);
+        Call<AllProductResult> call = retrofitInterface.getAllProduct();
+
+        call.enqueue(new Callback<AllProductResult>(){
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onResponse(Call<AllProductResult> call, retrofit2.Response<AllProductResult> response) {
+                if(response.code()==200){
+                    AllProductResult result = response.body();
+                    bestList = result.getProduct_best_arr();   //ArrayList
+                    Log.d("kyung", bestList.toString());
+
+                    //sorting
+                    sort(bestList);
+
+                    adapter = new BestAdapter(getActivity().getApplicationContext(), bestList);
+
+                    GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 1, GridLayoutManager.VERTICAL, false);
+
+                    mRecyclerView.setAdapter(adapter);
+
+                    mRecyclerView.setLayoutManager(gridLayoutManager);
+                    mRecyclerView.setHasFixedSize(true);
+
+                }else if(response.code()==404){
+                    Toast.makeText(getActivity().getApplicationContext(),"No Products", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AllProductResult> call, Throwable t){
+                Log.d("failed", "connection "+call);
+                Toast.makeText(getActivity().getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
 
     }
 }
