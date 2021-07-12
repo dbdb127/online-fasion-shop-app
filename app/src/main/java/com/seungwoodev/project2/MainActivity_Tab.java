@@ -35,9 +35,9 @@ public class MainActivity_Tab extends AppCompatActivity {
         adapter = new FragmentAdapter(fm, getLifecycle());
         pager2.setAdapter(adapter);
 
-        tabLayout.addTab(tabLayout.newTab().setText("First"));
+        tabLayout.addTab(tabLayout.newTab().setText("Products"));
         tabLayout.addTab(tabLayout.newTab().setText("Second"));
-        tabLayout.addTab(tabLayout.newTab().setText("Third"));
+        tabLayout.addTab(tabLayout.newTab().setText("UserInfo"));
 
         tabLayout.getTabAt(0).setIcon(R.drawable.ic_baseline_checkroom_24);
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_baseline_person_24);
