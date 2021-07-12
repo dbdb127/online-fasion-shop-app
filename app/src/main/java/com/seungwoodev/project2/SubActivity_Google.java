@@ -139,6 +139,7 @@ public class SubActivity_Google extends AppCompatActivity {
 
                 HashMap<String, String> map = new HashMap<>();
                 map.put("email", strEmail);
+                map.put("name", strNick);
                 Call<Void> call = retrofitInterface.checkUser(map);
                 call.enqueue(new Callback<Void>() {
                     @Override

@@ -2,6 +2,8 @@ package com.seungwoodev.project2;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.ByteArrayOutputStream;
 import java.util.List;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
@@ -67,11 +70,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
                 public void onClick(View v) {
                     Intent intent = new Intent(context ,ImageFullActivity.class);
                     int position = getAdapterPosition();
-//                    Bitmap sendBitmap = BitmapFactory.decodeResource(context.getResources(), images.get(position));
-//                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
-//                    sendBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-//                    byte[] byteArray = stream.toByteArray();
-                    intent.putExtra("image",images.get(position));
+                    Bitmap sendBitmap = BitmapFactory.decodeResource(context.getResources(), images.get(position));
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    sendBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                    byte[] byteArray = stream.toByteArray();
+                    intent.putExtra("image",byteArray);
                     intent.putExtra("title", titles.get(position));
                     intent.putExtra("price", prices.get(position));
                     intent.putExtra("qty", qty.get(position));

@@ -74,7 +74,7 @@ public class ProductActivity extends AppCompatActivity {
 
                     adapter = new ProductAdapter(ProductActivity.this, names, prices, qty, mImages);
 
-                    GridLayoutManager gridLayoutManager = new GridLayoutManager(ProductActivity.this, 2, GridLayoutManager.VERTICAL, false);
+                    GridLayoutManager gridLayoutManager = new GridLayoutManager(ProductActivity.this, 1, GridLayoutManager.VERTICAL, false);
 
                     mRecyclerView.setAdapter(adapter);
 
