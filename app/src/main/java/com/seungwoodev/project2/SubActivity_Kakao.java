@@ -107,6 +107,12 @@ public class SubActivity_Kakao extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(SubActivity_Kakao.this, MainActivity_Tab.class);
                 intent.putExtra("email", strEmail);
+                intent.putExtra("name", strNick);
+                if(strProfileImg == null){
+                    intent.putExtra("image", R.drawable.person);
+                }else{
+                    intent.putExtra("image", strProfileImg);
+                }
                 startActivity(intent);
             }
         });

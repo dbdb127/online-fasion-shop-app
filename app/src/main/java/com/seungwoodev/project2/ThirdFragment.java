@@ -1,13 +1,19 @@
 package com.seungwoodev.project2;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+
+import com.bumptech.glide.Glide;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 
 import java.util.List;
 
@@ -49,6 +55,11 @@ public class ThirdFragment extends Fragment {
         String email = MainActivity_Tab.getUser();
         TextView email_view = getView().findViewById(R.id.email_txt);
         email_view.setText(email);
+
+        ImageView image_view = getView().findViewById(R.id.profile_img);
+        Glide.with(getActivity().getApplicationContext())
+                .load(MainActivity_Tab.getImage())
+                .into(image_view);
         Log.d("name", name);
         Log.d("email", email);
 

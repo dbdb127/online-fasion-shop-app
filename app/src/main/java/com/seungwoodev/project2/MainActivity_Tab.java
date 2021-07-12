@@ -1,6 +1,7 @@
 package com.seungwoodev.project2;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,7 +14,7 @@ public class MainActivity_Tab extends AppCompatActivity {
 
     private static String strEmail;
     private static String strName;
-    private String fragmentTransaction;
+    private static String strImage;
     TabLayout tabLayout;
     ViewPager2 pager2;
     FragmentAdapter adapter;
@@ -26,7 +27,7 @@ public class MainActivity_Tab extends AppCompatActivity {
         Intent intent = getIntent();
         strEmail = intent.getStringExtra("email");
         strName = intent.getStringExtra("name");
-        fragmentTransaction = intent.getStringExtra("cart");
+        strImage = intent.getStringExtra("image");
 
         tabLayout = findViewById(R.id.tab);
         pager2 = findViewById(R.id.viewPager2);
@@ -68,8 +69,7 @@ public class MainActivity_Tab extends AppCompatActivity {
         });
     }
 
-    public static String getUser(){
-        return strEmail;
-    }
+    public static String getUser(){ return strEmail; }
     public static String getUsername() { return strName; }
+    public static String getImage() { return strImage; }
 }

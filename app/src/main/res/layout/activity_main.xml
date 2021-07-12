@@ -25,6 +25,8 @@
         android:id="@+id/btn_login_Google"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="log in with google Account"
+        android:layout_centerHorizontal="true"
         android:layout_above="@id/btn_login_Kakao">
 
     </com.google.android.gms.common.SignInButton>

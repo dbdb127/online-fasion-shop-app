@@ -72,6 +72,7 @@ public class ExpandableListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
 
         View view;
+        Context context = parent.getContext();
 
         switch (viewType) {
             case HEADER:

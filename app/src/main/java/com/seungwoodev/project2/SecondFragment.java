@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -31,6 +32,9 @@ public class SecondFragment extends Fragment {
     private List<Integer> mImages;
     private BasketAdapter adapter;
 
+    //이미지 뷰 5장
+    ImageView image1, image2, image3, image4, image5;
+
     public SecondFragment() {
         // Required empty public constructor
     }
@@ -39,6 +43,8 @@ public class SecondFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
     }
 
 

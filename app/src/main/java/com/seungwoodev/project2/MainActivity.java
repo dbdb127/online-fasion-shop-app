@@ -112,6 +112,29 @@ public class MainActivity extends AppCompatActivity {
                         intent.putExtra("profileImg", result.getKakaoAccount().getProfile().getProfileImageUrl());
                         intent.putExtra("email", result.getKakaoAccount().getEmail());
                         startActivity(intent);
+
+                        //db에 전송
+                        HashMap<String, String> map = new HashMap<>();
+                        map.put("email", result.getKakaoAccount().getEmail());
+                        map.put("name", result.getKakaoAccount().getProfile().getNickname());
+                        Call<Void> call = retrofitInterface.checkUser(map);
+                        call.enqueue(new Callback<Void>() {
+                            @Override
+                            public void onResponse(Call<Void> call, Response<Void> response) {
+                                if(response.code()==200){
+
+                                }else if(response.code() ==400){
+                                    Toast.makeText(MainActivity.this, "Error",
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<Void> call, Throwable t) {
+                                Toast.makeText(MainActivity.this, t.getMessage(),
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        });
                     }
                 });
             }
@@ -142,6 +165,7 @@ public class MainActivity extends AppCompatActivity {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .requestProfile()
+                .requestIdToken(getString(R.string.default_web_client_id))
                 .build();
 
         // Build a GoogleSignInClient with the options specified by gso.
@@ -206,13 +230,13 @@ public class MainActivity extends AppCompatActivity {
                             intent.putExtra("email", result.getEmail());
                             startActivity(intent);
                         }else if(result.getCode()==404){
-                            Toast.makeText(MainActivity.this,"Wrong Credentials", Toast.LENGTH_LONG).show();
+                            Toast.makeText(MainActivity.this,"Wrong Credentials", Toast.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
                     public void onFailure(Call<LoginResult> call, Throwable t){
-                        Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -246,13 +270,13 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<Void> call, Response<Void> response) {
                         if(response.code()==200){
-                            Toast.makeText(MainActivity.this, "Signed up successfully.\nPlease log in again.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(MainActivity.this, "Signed up successfully.\nPlease log in again.", Toast.LENGTH_SHORT).show();
 
                             //activity main으로 넘어가기
                             Intent intent = new Intent(MainActivity.this, MainActivity.class);
                             startActivity(intent);
                         }else if(response.code() ==400){
-                            Toast.makeText(MainActivity.this, "Already registered.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(MainActivity.this, "Already registered.", Toast.LENGTH_SHORT).show();
 
                             //activity main으로 넘어가기
                             Intent intent = new Intent(MainActivity.this, MainActivity.class);
@@ -263,7 +287,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onFailure(Call<Void> call, Throwable t) {
                         Toast.makeText(MainActivity.this, t.getMessage(),
-                                Toast.LENGTH_LONG).show();
+                                Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -323,7 +347,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         if(account != null){
-            Toast.makeText(this,"U Signed In successfully",Toast.LENGTH_LONG).show();
+            Toast.makeText(this,"You Signed In successfully",Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(this, SubActivity_Google.class);
             intent.putExtra("email", account.getEmail());
             Log.d("account:", "not null");
@@ -355,7 +379,7 @@ public class MainActivity extends AppCompatActivity {
 
         }else {
             Log.d("account: ", "null");
-            Toast.makeText(this,"U Didnt signed in",Toast.LENGTH_LONG).show();
+            Toast.makeText(this,"You didn't signed in",Toast.LENGTH_SHORT).show();
         }
 
     }

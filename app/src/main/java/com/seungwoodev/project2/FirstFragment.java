@@ -143,7 +143,7 @@ public class FirstFragment extends Fragment {
                                 adapter.setOnItemClickListener(new ExpandableListAdapter.OnItemClickListener() {
                                     @Override
                                     public void onItemClick(int position, Item item) {
-                                        Intent intent = new Intent(getActivity().getApplicationContext(), ProductActivity.class);
+                                        Intent intent = new Intent(getActivity(), ProductActivity.class);
                                         intent.putExtra("subCategory", item.getText());
                                         startActivity(intent);
                                     }
@@ -153,8 +153,8 @@ public class FirstFragment extends Fragment {
                                 mRecyclerView.setLayoutManager(mLineaerLayoutManager);
                                 mRecyclerView.setAdapter(adapter);
                                 mRecyclerView.setHasFixedSize(true);
-                                DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(), mLineaerLayoutManager.getOrientation());
-                                mRecyclerView.addItemDecoration(dividerItemDecoration);
+//                                DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(), mLineaerLayoutManager.getOrientation());
+//                                mRecyclerView.addItemDecoration(dividerItemDecoration);
                             }
                             @Override
                             public void onFailure(Call<CategoryResult> call, Throwable t) {

@@ -55,6 +55,7 @@ public class ProductActivity extends AppCompatActivity {
         HashMap<String, String> map = new HashMap<>();
 
         map.put("subCategory", subCategory);
+        Log.d("kyung", subCategory);
         Call<ProductResult> call = retrofitInterface.getProduct(map);
 
         call.enqueue(new Callback<ProductResult>(){
