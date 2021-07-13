@@ -77,7 +77,6 @@ public class BasketActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //request buy query
-
                 HashMap<String, String> map = new HashMap<>();
 
                 //total price 계산하기

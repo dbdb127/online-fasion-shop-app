@@ -1,5 +1,6 @@
 package com.seungwoodev.project2;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
@@ -16,6 +17,8 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.InputStream;
 import java.lang.reflect.Array;
@@ -37,6 +40,7 @@ public class SecondFragment extends Fragment {
     private ArrayList<Product_Best> bestList;
     private ArrayList<Bitmap> mImages;
     private BestAdapter adapter;
+    private FloatingActionButton button;
 
     private Retrofit retrofit;
     private RetrofitInterface retrofitInterface;
@@ -83,6 +87,16 @@ public class SecondFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         mRecyclerView = view.findViewById(R.id.recyclerview);
+
+        button = view.findViewById(R.id.fab);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), BasketActivity.class);
+                startActivity(intent);
+            }
+        });
 
         bestList = new ArrayList<Product_Best>();
         mImages = new ArrayList<Bitmap>();

@@ -10,7 +10,10 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.BufferedInputStream;
 import java.io.InputStream;
@@ -33,6 +36,7 @@ public class ProductActivity extends AppCompatActivity {
     public ArrayList<Bitmap> mImages;
     private ProductAdapter adapter;
     private String subCategory;
+    private FloatingActionButton button;
 
     private Retrofit retrofit;
     private RetrofitInterface retrofitInterface;
@@ -42,6 +46,16 @@ public class ProductActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product);
+
+        button = findViewById(R.id.fab);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProductActivity.this, BasketActivity.class);
+                startActivity(intent);
+            }
+        });
 
         Intent intent = getIntent();
         subCategory = intent.getStringExtra("subCategory");

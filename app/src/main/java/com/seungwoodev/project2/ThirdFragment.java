@@ -1,5 +1,6 @@
 package com.seungwoodev.project2;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.HashMap;
 import java.util.List;
@@ -36,6 +38,7 @@ public class ThirdFragment extends Fragment {
     private String BASE_URL = "http:192.249.18.167";
     public List<String> image;
     private int cash;
+    private FloatingActionButton button;
 
     public ThirdFragment() {
         // Required empty public constructor
@@ -58,6 +61,17 @@ public class ThirdFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+
+        button = view.findViewById(R.id.fab);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), BasketActivity.class);
+                startActivity(intent);
+            }
+        });
+
         Log.d("onViewCreated:","worked");
         super.onViewCreated(view, savedInstanceState);
         String name = MainActivity_Tab.getUsername();

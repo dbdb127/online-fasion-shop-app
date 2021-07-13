@@ -40,4 +40,16 @@
         android:layout_marginTop="20dp"
         android:gravity="center_horizontal"/>
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="15dp"
+        app:backgroundTint="@color/colorPrimary"
+        app:srcCompat="@drawable/ic_baseline_shopping_bag_24" />
+
 </RelativeLayout>
