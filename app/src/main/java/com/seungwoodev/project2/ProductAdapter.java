@@ -89,7 +89,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
                     sendBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
                     byte[] byteArray = stream.toByteArray();
 
-                    Log.d("imageintent", String.valueOf(byteArray));
                     intent.putExtra("image",byteArray);
                     intent.putExtra("title", titles.get(position));
                     intent.putExtra("price", prices.get(position));

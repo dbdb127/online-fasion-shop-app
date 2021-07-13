@@ -1,6 +1,7 @@
 package com.seungwoodev.project2;
 
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,8 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -17,9 +21,13 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 
+import java.util.HashMap;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ThirdFragment extends Fragment {
 
@@ -27,6 +35,7 @@ public class ThirdFragment extends Fragment {
     private RetrofitInterface retrofitInterface;
     private String BASE_URL = "http:192.249.18.167";
     public List<String> image;
+    private int cash;
 
     public ThirdFragment() {
         // Required empty public constructor
@@ -74,6 +83,47 @@ public class ThirdFragment extends Fragment {
         }
         Log.d("name", name);
         Log.d("email", email);
+
+
+
+        //db에서 cash 가져오기
+        Retrofit retrofit;
+        RetrofitInterface retrofitInterface;
+        String BASE_URL = "http:192.249.18.167:80";
+
+        retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        HashMap<String, String> map = new HashMap<>();
+        map.put("email", email);
+
+        retrofitInterface = retrofit.create(RetrofitInterface.class);
+        Call<UserInfoResult> call = retrofitInterface.getCash(map);
+
+
+        call.enqueue(new Callback<UserInfoResult>(){
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onResponse(Call<UserInfoResult> call, retrofit2.Response<UserInfoResult> response) {
+                if(response.code()==200){
+                    UserInfoResult result = response.body();
+                    cash = result.getCash();
+                    TextView textView = getView().findViewById(R.id.cash_txt);
+                    textView.setText("Cash  "+String.valueOf(cash));
+                }else if(response.code()==404){
+                    Toast.makeText(getActivity().getApplicationContext(),"No Products", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserInfoResult> call, Throwable t){
+                Log.d("failed", "connection "+call);
+                Toast.makeText(getActivity().getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+
 
     }
 
