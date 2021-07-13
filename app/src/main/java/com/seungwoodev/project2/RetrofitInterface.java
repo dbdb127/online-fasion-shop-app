@@ -60,4 +60,7 @@ public interface RetrofitInterface {
 
     @POST("/delete_cart")
     Call<Void> deleteProduct(@Body HashMap<String, String> map);
+
+    @POST("/purchase")
+    Call<PurchaseResult> getPuchase(@Body HashMap<String, String> map);
 }

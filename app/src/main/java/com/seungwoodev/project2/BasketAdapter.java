@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.StrictMode;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,10 +21,13 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
@@ -61,7 +66,43 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.MyViewHold
         holder.mTextView_title.setText(names.get(position));
         holder.mTextView_price.setText(prices.get(position).toString());
         holder.mTextView_qty.setText(qty.get(position).toString());
-        holder.mImageView.setImageBitmap(images.get(position));
+//        holder.mImageView.setImageBitmap(images.get(position));
+
+        //db에서 image 불러오기
+        Retrofit retrofit;
+        RetrofitInterface retrofitInterface;
+        String BASE_URL = "http:192.249.18.167:80";
+
+        retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        retrofitInterface = retrofit.create(RetrofitInterface.class);
+
+        HashMap<String, String> map = new HashMap<>();
+
+        map.put("name", names.get(position));
+        Call<ResponseBody> callImage = retrofitInterface.getImage(map);
+
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+        callImage.enqueue(new Callback<ResponseBody>(){
+            @Override
+            public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+                InputStream is = response.body().byteStream();
+                Bitmap bitmap = BitmapFactory.decodeStream(is);
+
+                images.add(position, bitmap);
+                holder.mImageView.setImageBitmap(bitmap);
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t){
+                Log.d("bitmapfail", "String.valueOf(bitmap)");
+                Toast.makeText(context, t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     @Override
@@ -124,6 +165,8 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.MyViewHold
                                     HashMap<String, String> map = new HashMap<>();
 
                                     int position = getAdapterPosition();
+//                                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+//                                    map.put("timestamp", sdf);
                                     map.put("name", names.get(position));
                                     map.put("qty", qty.get(position).toString());
                                     map.put("email", MainActivity_Tab.getUser());

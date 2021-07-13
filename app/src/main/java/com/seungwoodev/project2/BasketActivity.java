@@ -24,6 +24,8 @@ import android.widget.Toast;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -86,6 +88,9 @@ public class BasketActivity extends AppCompatActivity {
                 }
                 map.put("price", String.valueOf(tmp));
                 map.put("email", MainActivity_Tab.getUser());
+                Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                map.put("time", String.valueOf(sdf.format(timestamp)));
 
                 Call<Void> call = retrofitInterface.buyProduct(map);
 

@@ -3,9 +3,11 @@ package com.seungwoodev.project2;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,13 +28,14 @@ public class SubActivity_NotSDK extends AppCompatActivity {
 
         TextView tv_nick = findViewById(R.id.tv_nickName);
         TextView tv_email = findViewById(R.id.tv_email);
-//        ImageView iv_profile = findViewById(R.id.iv_profile);
+        ImageView iv_profile = findViewById(R.id.iv_profile);
 
         // set nickname
         tv_nick.setText(strNick);
         // set email
         tv_email.setText(strEmail);
         // set profile image
+        iv_profile.setImageResource(R.drawable.person);
 //        Glide.with(this).load(strProfileImg).into(iv_profile);
 
         // log out
@@ -57,7 +60,7 @@ public class SubActivity_NotSDK extends AppCompatActivity {
                 Intent intent = new Intent(SubActivity_NotSDK.this, MainActivity_Tab.class);
                 intent.putExtra("email", strEmail);
                 intent.putExtra("name", strNick);
-                intent.putExtra("image", R.drawable.person);
+//                intent.putExtra("image", "");
                 startActivity(intent);
             }
         });

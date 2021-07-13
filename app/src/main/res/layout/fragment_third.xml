@@ -4,41 +4,93 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <ImageView
         android:id="@+id/profile_img"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_centerInParent="true"
-        android:gravity="center"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
         app:srcCompat="@drawable/ic_baseline_person_24"
         android:visibility="visible"/>
 
     <TextView
-        android:id="@+id/email_txt"
-        android:layout_width="match_parent"
+        android:id="@+id/email"
+        android:layout_width="wrap_content"
         android:layout_height="40dp"
-        android:layout_centerHorizontal="true"
         android:layout_below="@+id/profile_img"
         android:layout_marginTop="20dp"
-        android:gravity="center_horizontal"/>
+        android:textSize="16dp"
+        android:text="User Email: "
+        android:layout_marginLeft="35dp"/>
+
+    <TextView
+        android:id="@+id/email_txt"
+        android:layout_width="wrap_content"
+        android:text="kyung@gmail.com"
+        android:textSize="16dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/profile_img"
+        android:layout_marginTop="20dp"
+        android:layout_toRightOf="@id/email"/>
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_below="@+id/email_txt"
+        android:textSize="16dp"
+        android:text="User Name: "
+        android:layout_marginLeft="35dp"/>
 
     <TextView
         android:id="@+id/name_txt"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
+        android:text="kyung"
+        android:textSize="16dp"
         android:layout_height="40dp"
-        android:layout_centerHorizontal="true"
         android:layout_below="@+id/email_txt"
-        android:layout_marginTop="20dp"
-        android:gravity="center_horizontal"/>
+        android:layout_toRightOf="@id/name"/>
+
+    <TextView
+        android:id="@+id/cash"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_below="@+id/name_txt"
+        android:textSize="16dp"
+        android:text="User Cash: "
+        android:layout_marginLeft="35dp"/>
 
     <TextView
         android:id="@+id/cash_txt"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
+        android:text="kyung"
+        android:textSize="16dp"
         android:layout_height="40dp"
-        android:layout_centerHorizontal="true"
         android:layout_below="@+id/name_txt"
-        android:layout_marginTop="20dp"
-        android:gravity="center_horizontal"/>
+        android:layout_toRightOf="@id/name"/>
+
+    <TextView
+        android:id="@+id/pur_list"
+        android:layout_width="wrap_content"
+        android:text="List of Purchase Products"
+        android:textSize="25dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/cash_txt"
+        android:layout_centerHorizontal="true"
+        android:fontFamily="@font/brandon_grotesque_black"
+        android:layout_marginTop="10dp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerview_purchase"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/pur_list"
+        android:scrollbarFadeDuration="0"
+        android:scrollbarSize="5dp"
+        android:scrollbarThumbVertical="@android:color/darker_gray"
+        android:scrollbars="vertical"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"

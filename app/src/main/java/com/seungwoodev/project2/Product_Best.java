@@ -23,6 +23,6 @@ public class Product_Best {
     }
 
     public static boolean compare(Product_Best arg0, Product_Best arg1){
-        return arg0.hit >= arg1.hit;
+        return arg0.hit <= arg1.hit;
     }
 }

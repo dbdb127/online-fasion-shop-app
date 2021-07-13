@@ -138,9 +138,17 @@ public class SecondFragment extends Fragment {
                             @Override
                             public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
                                 InputStream is = response.body().byteStream();
-//                                URL url = is.to
                                 Bitmap bitmap = BitmapFactory.decodeStream(is);
+
+//                                int check=0;
+//                                for(int a=0;a<bestList.size();a++){
+//                                    if(bestList.get(a).name.equals(bestList.get(j).name)){
+//                                        check=a;
+//                                        break;
+//                                    }
+//                                }
                                 mImages.add(bitmap);
+
                                 if(j == bestList.size()-1) {
                                     adapter = new BestAdapter(getActivity().getApplicationContext(), bestList, mImages);
 
