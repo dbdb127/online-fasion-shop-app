@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -15,6 +16,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
 
 import java.util.HashMap;
 
@@ -37,7 +40,8 @@ public class ImageFullActivity extends AppCompatActivity {
         setContentView(R.layout.activity_image_full);
 
         Intent intent = getIntent();
-        byte[] arr = getIntent().getByteArrayExtra("image");
+        byte[] arr = intent.getByteArrayExtra("image");
+        Log.d("imageintent", String.valueOf(arr));
         image = BitmapFactory.decodeByteArray(arr, 0, arr.length);
         ImageView BigImage = (ImageView)findViewById(R.id.imageView);
         BigImage.setImageBitmap(image);
@@ -45,6 +49,7 @@ public class ImageFullActivity extends AppCompatActivity {
         strTitle = intent.getStringExtra("title");
         intPrice = intent.getIntExtra("price", 10000);
 
+//        ImageView imageview = findViewById(R.id.imageView);
         TextView text_title = findViewById(R.id.text_title);
         TextView text_price = findViewById(R.id.text_price);
         TextView text_qty = findViewById(R.id.text_qty);
@@ -101,6 +106,9 @@ public class ImageFullActivity extends AppCompatActivity {
                     text_title.setText(strTitle);
                     text_price.setText(intPrice+"");
                     text_qty.setText(intQty+"");
+//                    Glide.with(getApplicationContext()).load(image).into(imageview);
+                    BigImage.setImageBitmap(image);
+
 
                 }else if(response.code()==404){
                     Toast.makeText(ImageFullActivity.this,"No Products", Toast.LENGTH_SHORT).show();
@@ -149,6 +157,45 @@ public class ImageFullActivity extends AppCompatActivity {
                                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
+                                            //intQty db에서 받아오기
+                                            Retrofit retrofit;
+                                            RetrofitInterface retrofitInterface;
+                                            String BASE_URL = "http:192.249.18.167:80";
+
+                                            retrofit = new Retrofit.Builder()
+                                                    .baseUrl(BASE_URL)
+                                                    .addConverterFactory(GsonConverterFactory.create())
+                                                    .build();
+
+                                            retrofitInterface = retrofit.create(RetrofitInterface.class);
+                                            HashMap<String, String> map = new HashMap<>();
+                                            map.put("name", strTitle);
+                                            Call<SimpleProductResult> call = retrofitInterface.getSimpleProduct(map);
+                                            call.enqueue(new Callback<SimpleProductResult>(){
+                                                @Override
+                                                public void onResponse(Call<SimpleProductResult> call, retrofit2.Response<SimpleProductResult> response) {
+                                                    if(response.code()==200){
+                                                        SimpleProductResult result = response.body();
+                                                        intQty = result.getQty();   //ArrayList
+
+                                                        text_title.setText(strTitle);
+                                                        text_price.setText(intPrice+"");
+                                                        text_qty.setText(intQty+"");
+//                                                        imageview.setImageBitmap(image);
+
+                                                    }else if(response.code()==404){
+                                                        Toast.makeText(ImageFullActivity.this,"No Products", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                }
+
+                                                @Override
+                                                public void onFailure(Call<SimpleProductResult> call, Throwable t){
+                                                    Log.d("failed", "connection "+call);
+                                                    Toast.makeText(ImageFullActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+
+
                                             //장바구니로 넘어가기
                                             Intent intent = new Intent(ImageFullActivity.this, BasketActivity.class);
                                             startActivity(intent);
@@ -181,6 +228,7 @@ public class ImageFullActivity extends AppCompatActivity {
                                                         text_title.setText(strTitle);
                                                         text_price.setText(intPrice+"");
                                                         text_qty.setText(intQty+"");
+//                                                        imageview.setImageBitmap(image);
 
                                                     }else if(response.code()==404){
                                                         Toast.makeText(ImageFullActivity.this,"No Products", Toast.LENGTH_SHORT).show();

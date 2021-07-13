@@ -5,13 +5,21 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.io.BufferedInputStream;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
@@ -22,7 +30,7 @@ public class ProductActivity extends AppCompatActivity {
     public ArrayList<String> names;
     public ArrayList<Integer> prices;
     public ArrayList<Integer> qty;
-    public ArrayList<Integer> mImages;
+    public ArrayList<Bitmap> mImages;
     private ProductAdapter adapter;
     private String subCategory;
 
@@ -43,7 +51,7 @@ public class ProductActivity extends AppCompatActivity {
         names = new ArrayList<>();
         prices = new ArrayList<Integer>();
         qty = new ArrayList<Integer>();
-        mImages = new ArrayList<Integer>();
+        mImages = new ArrayList<Bitmap>();
 
         //get titles, prices, qty from database
         retrofit = new Retrofit.Builder()
@@ -55,7 +63,6 @@ public class ProductActivity extends AppCompatActivity {
         HashMap<String, String> map = new HashMap<>();
 
         map.put("subCategory", subCategory);
-        Log.d("kyung", subCategory);
         Call<ProductResult> call = retrofitInterface.getProduct(map);
 
         call.enqueue(new Callback<ProductResult>(){
@@ -67,19 +74,48 @@ public class ProductActivity extends AppCompatActivity {
                     prices = result.getPrice();
                     qty = result.getQty();
 
+                    Log.d("image0","22");
                     for(int i=0;i<names.size();i++){
-                        mImages.add(R.drawable.a);
-//                        Log.d("kyung", names.get(i));
+                        final int j=i;
+                        HashMap<String, String> map = new HashMap<>();
+
+                        map.put("name", names.get(i));
+                        Log.d("image1",names.get(i));
+                        Call<ResponseBody> callImage = retrofitInterface.getImage(map);
+
+                        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+                        StrictMode.setThreadPolicy(policy);
+                        callImage.enqueue(new Callback<ResponseBody>(){
+                            @Override
+                            public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+                                InputStream is = response.body().byteStream();
+//                                URL url = is.to
+                                Bitmap bitmap = BitmapFactory.decodeStream(is);
+                                mImages.add(bitmap);
+                                if(j == names.size()-1) {
+                                    adapter = new ProductAdapter(ProductActivity.this, names, prices, qty, mImages);
+                                    GridLayoutManager gridLayoutManager = new GridLayoutManager(ProductActivity.this, 1, GridLayoutManager.VERTICAL, false);
+                                    mRecyclerView.setAdapter(adapter);
+                                    mRecyclerView.setLayoutManager(gridLayoutManager);
+                                    mRecyclerView.setHasFixedSize(true);
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<ResponseBody> call, Throwable t){
+                                Log.d("bitmapfail", "String.valueOf(bitmap)");
+                                Toast.makeText(ProductActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
+                            }
+                        });
                     }
 
-                    adapter = new ProductAdapter(ProductActivity.this, names, prices, qty, mImages);
+//                    Log.d("kyung", mImages.toString());
 
-                    GridLayoutManager gridLayoutManager = new GridLayoutManager(ProductActivity.this, 1, GridLayoutManager.VERTICAL, false);
-
-                    mRecyclerView.setAdapter(adapter);
-
-                    mRecyclerView.setLayoutManager(gridLayoutManager);
-                    mRecyclerView.setHasFixedSize(true);
+//                    adapter = new ProductAdapter(ProductActivity.this, names, prices, qty, mImages);
+//                    GridLayoutManager gridLayoutManager = new GridLayoutManager(ProductActivity.this, 1, GridLayoutManager.VERTICAL, false);
+//                    mRecyclerView.setAdapter(adapter);
+//                    mRecyclerView.setLayoutManager(gridLayoutManager);
+//                    mRecyclerView.setHasFixedSize(true);
 
                 }else if(result.getCode()==404){
                     Toast.makeText(ProductActivity.this.getApplicationContext(),"No Products", Toast.LENGTH_SHORT).show();
@@ -94,4 +130,23 @@ public class ProductActivity extends AppCompatActivity {
         });
     }
 
+    private Bitmap GetImageFromURL(String strImageURL){
+        Bitmap imgBitmap = null;
+
+        try{
+            URL url = new URL(strImageURL);
+            URLConnection conn = url.openConnection();
+            conn.connect();
+
+            int nSize = conn.getContentLength();
+            BufferedInputStream bis = new BufferedInputStream(conn.getInputStream(), nSize);
+            imgBitmap = BitmapFactory.decodeStream(bis);
+
+            bis.close();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return imgBitmap;
+    }
 }

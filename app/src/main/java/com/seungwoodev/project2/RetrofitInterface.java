@@ -11,6 +11,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import retrofit2.http.Streaming;
 
 public interface RetrofitInterface {
     @POST("/login")
@@ -47,5 +48,8 @@ public interface RetrofitInterface {
     @GET("/product_best")
     Call<AllProductResult> getAllProduct();
 
+    @POST("/image")
+    @Streaming
+    Call<ResponseBody> getImage(@Body HashMap<String, String> map);
 
 }

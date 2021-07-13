@@ -106,7 +106,7 @@ public class SecondFragment extends Fragment {
                 if(response.code()==200){
                     AllProductResult result = response.body();
                     bestList = result.getProduct_best_arr();   //ArrayList
-                    Log.d("kyung", bestList.toString());
+//                    Log.d("kyung", bestList.toString());
 
                     //sorting
                     sort(bestList);

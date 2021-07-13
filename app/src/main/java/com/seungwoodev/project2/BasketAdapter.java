@@ -40,7 +40,7 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.MyViewHold
         holder.mTextView_title.setText(titles.get(position));
         holder.mTextView_price.setText(prices.get(position).toString());
         holder.mTextView_qty.setText(qty.get(position).toString());
-        holder.mImageView.setImageResource(images.get(position));
+//        holder.mImageView.setImageResource(images.get(position));
     }
 
     @Override
