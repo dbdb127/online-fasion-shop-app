@@ -37,11 +37,11 @@ public class MainActivity_Tab extends AppCompatActivity {
         pager2.setAdapter(adapter);
 
         tabLayout.addTab(tabLayout.newTab().setText("Products"));
-        tabLayout.addTab(tabLayout.newTab().setText("Second"));
+        tabLayout.addTab(tabLayout.newTab().setText("Hot"));
         tabLayout.addTab(tabLayout.newTab().setText("UserInfo"));
 
         tabLayout.getTabAt(0).setIcon(R.drawable.ic_baseline_checkroom_24);
-        tabLayout.getTabAt(1).setIcon(R.drawable.ic_baseline_person_24);
+        tabLayout.getTabAt(1).setIcon(R.drawable.ic_baseline_local_fire_department_24);
         tabLayout.getTabAt(2).setIcon(R.drawable.ic_baseline_person_24);
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {

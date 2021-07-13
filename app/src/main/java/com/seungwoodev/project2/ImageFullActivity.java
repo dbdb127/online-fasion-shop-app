@@ -32,7 +32,6 @@ public class ImageFullActivity extends AppCompatActivity {
     private String strTitle;
     private Integer intPrice, intQty;
     int num = 1;
-    SubActivity_Kakao subActivityKakao = new SubActivity_Kakao();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,13 +42,12 @@ public class ImageFullActivity extends AppCompatActivity {
         byte[] arr = intent.getByteArrayExtra("image");
         Log.d("imageintent", String.valueOf(arr));
         image = BitmapFactory.decodeByteArray(arr, 0, arr.length);
-        ImageView BigImage = (ImageView)findViewById(R.id.imageView);
+        ImageView BigImage = findViewById(R.id.imageView);
         BigImage.setImageBitmap(image);
 
         strTitle = intent.getStringExtra("title");
         intPrice = intent.getIntExtra("price", 10000);
 
-//        ImageView imageview = findViewById(R.id.imageView);
         TextView text_title = findViewById(R.id.text_title);
         TextView text_price = findViewById(R.id.text_price);
         TextView text_qty = findViewById(R.id.text_qty);
@@ -106,7 +104,6 @@ public class ImageFullActivity extends AppCompatActivity {
                     text_title.setText(strTitle);
                     text_price.setText(intPrice+"");
                     text_qty.setText(intQty+"");
-//                    Glide.with(getApplicationContext()).load(image).into(imageview);
                     BigImage.setImageBitmap(image);
 
 
@@ -181,7 +178,7 @@ public class ImageFullActivity extends AppCompatActivity {
                                                         text_title.setText(strTitle);
                                                         text_price.setText(intPrice+"");
                                                         text_qty.setText(intQty+"");
-//                                                        imageview.setImageBitmap(image);
+                                                        BigImage.setImageBitmap(image);
 
                                                     }else if(response.code()==404){
                                                         Toast.makeText(ImageFullActivity.this,"No Products", Toast.LENGTH_SHORT).show();
@@ -228,7 +225,7 @@ public class ImageFullActivity extends AppCompatActivity {
                                                         text_title.setText(strTitle);
                                                         text_price.setText(intPrice+"");
                                                         text_qty.setText(intQty+"");
-//                                                        imageview.setImageBitmap(image);
+                                                        BigImage.setImageBitmap(image);
 
                                                     }else if(response.code()==404){
                                                         Toast.makeText(ImageFullActivity.this,"No Products", Toast.LENGTH_SHORT).show();

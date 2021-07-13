@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardUseCompatPadding="true"
-        app:cardElevation="5dp"
+        app:cardElevation="4dp"
         app:cardCornerRadius="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -47,6 +47,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/text_title"
                 android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"
                 android:text="price"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -57,6 +58,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/text_price"
                 android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"
                 android:text="qty"
                 android:textSize="20sp"
                 android:textStyle="bold" />

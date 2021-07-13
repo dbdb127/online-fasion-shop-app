@@ -1,7 +1,10 @@
 package com.seungwoodev.project2;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,11 +17,13 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.InputStream;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
@@ -30,6 +35,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class SecondFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private ArrayList<Product_Best> bestList;
+    private ArrayList<Bitmap> mImages;
     private BestAdapter adapter;
 
     private Retrofit retrofit;
@@ -58,12 +64,6 @@ public class SecondFragment extends Fragment {
         return inflater.inflate(R.layout.activity_product, container, false);
     }
 
-
-//    @RequiresApi(api = Build.VERSION_CODES.N)
-//    public static void sort(ArrayList<Product_Best> list){
-//        list.sort((o1, o2)->Product_Best.compare(o1, o2));
-//    }
-
     public void sort(ArrayList<Product_Best> arg){
 
         for(int i=0; i<arg.size(); i++){
@@ -85,6 +85,7 @@ public class SecondFragment extends Fragment {
         mRecyclerView = view.findViewById(R.id.recyclerview);
 
         bestList = new ArrayList<Product_Best>();
+        mImages = new ArrayList<Bitmap>();
 
         //db에서 all products 가져오기
         Retrofit retrofit;
@@ -106,19 +107,45 @@ public class SecondFragment extends Fragment {
                 if(response.code()==200){
                     AllProductResult result = response.body();
                     bestList = result.getProduct_best_arr();   //ArrayList
-//                    Log.d("kyung", bestList.toString());
 
                     //sorting
                     sort(bestList);
 
-                    adapter = new BestAdapter(getActivity().getApplicationContext(), bestList);
+                    for(int i=0;i<bestList.size();i++){
+                        final int j=i;
+                        HashMap<String, String> map = new HashMap<>();
 
-                    GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 1, GridLayoutManager.VERTICAL, false);
+                        map.put("name", bestList.get(i).name);
+                        Call<ResponseBody> callImage = retrofitInterface.getImage(map);
 
-                    mRecyclerView.setAdapter(adapter);
+                        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+                        StrictMode.setThreadPolicy(policy);
+                        callImage.enqueue(new Callback<ResponseBody>(){
+                            @Override
+                            public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+                                InputStream is = response.body().byteStream();
+//                                URL url = is.to
+                                Bitmap bitmap = BitmapFactory.decodeStream(is);
+                                mImages.add(bitmap);
+                                if(j == bestList.size()-1) {
+                                    adapter = new BestAdapter(getActivity().getApplicationContext(), bestList, mImages);
 
-                    mRecyclerView.setLayoutManager(gridLayoutManager);
-                    mRecyclerView.setHasFixedSize(true);
+                                    GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 1, GridLayoutManager.VERTICAL, false);
+
+                                    mRecyclerView.setAdapter(adapter);
+
+                                    mRecyclerView.setLayoutManager(gridLayoutManager);
+                                    mRecyclerView.setHasFixedSize(true);
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<ResponseBody> call, Throwable t){
+                                Log.d("bitmapfail", "String.valueOf(bitmap)");
+                                Toast.makeText(getActivity().getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG).show();
+                            }
+                        });
+                    }
 
                 }else if(response.code()==404){
                     Toast.makeText(getActivity().getApplicationContext(),"No Products", Toast.LENGTH_LONG).show();

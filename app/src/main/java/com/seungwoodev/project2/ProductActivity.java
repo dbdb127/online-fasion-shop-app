@@ -74,13 +74,13 @@ public class ProductActivity extends AppCompatActivity {
                     prices = result.getPrice();
                     qty = result.getQty();
 
-                    Log.d("image0","22");
+//                    Log.d("image0","22");
                     for(int i=0;i<names.size();i++){
                         final int j=i;
                         HashMap<String, String> map = new HashMap<>();
 
                         map.put("name", names.get(i));
-                        Log.d("image1",names.get(i));
+//                        Log.d("image1",names.get(i));
                         Call<ResponseBody> callImage = retrofitInterface.getImage(map);
 
                         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -109,14 +109,6 @@ public class ProductActivity extends AppCompatActivity {
                         });
                     }
 
-//                    Log.d("kyung", mImages.toString());
-
-//                    adapter = new ProductAdapter(ProductActivity.this, names, prices, qty, mImages);
-//                    GridLayoutManager gridLayoutManager = new GridLayoutManager(ProductActivity.this, 1, GridLayoutManager.VERTICAL, false);
-//                    mRecyclerView.setAdapter(adapter);
-//                    mRecyclerView.setLayoutManager(gridLayoutManager);
-//                    mRecyclerView.setHasFixedSize(true);
-
                 }else if(result.getCode()==404){
                     Toast.makeText(ProductActivity.this.getApplicationContext(),"No Products", Toast.LENGTH_SHORT).show();
                 }
@@ -128,25 +120,5 @@ public class ProductActivity extends AppCompatActivity {
                 Toast.makeText(ProductActivity.this.getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    private Bitmap GetImageFromURL(String strImageURL){
-        Bitmap imgBitmap = null;
-
-        try{
-            URL url = new URL(strImageURL);
-            URLConnection conn = url.openConnection();
-            conn.connect();
-
-            int nSize = conn.getContentLength();
-            BufferedInputStream bis = new BufferedInputStream(conn.getInputStream(), nSize);
-            imgBitmap = BitmapFactory.decodeStream(bis);
-
-            bis.close();
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
-        return imgBitmap;
     }
 }

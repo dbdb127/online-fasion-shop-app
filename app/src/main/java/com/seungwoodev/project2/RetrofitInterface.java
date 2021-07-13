@@ -52,4 +52,10 @@ public interface RetrofitInterface {
     @Streaming
     Call<ResponseBody> getImage(@Body HashMap<String, String> map);
 
+    @POST("/payment")
+    Call<Void> buyProduct(@Body HashMap<String, String> map);
+
+    @POST("/cash")
+    Call<UserInfoResult> getCash(@Body HashMap<String, String> map);
+
 }
