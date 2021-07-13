@@ -2,36 +2,65 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="40dp">
 
+<!--    <RelativeLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent">-->
     <EditText
+        android:id="@+id/nameEdit"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_margin="8dp"
         android:hint="Enter name"
-        android:id="@+id/nameEdit"/>
+        android:ems="20"
+        android:inputType="textEmailAddress"
+        android:background="@drawable/custom_input"
+        android:drawableLeft="@drawable/custom_person_icon"
+        android:drawablePadding="12dp"
+        android:paddingLeft="15dp"
+        android:layout_above="@id/emailEdit" />
 
     <EditText
+        android:id="@+id/emailEdit"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_margin="8dp"
         android:hint="Enter email"
-        android:id="@+id/emailEdit"/>
+        android:ems="20"
+        android:inputType="textEmailAddress"
+        android:background="@drawable/custom_input"
+        android:drawableLeft="@drawable/custom_email_icon"
+        android:drawablePadding="12dp"
+        android:paddingLeft="15dp"
+        android:layout_above="@id/passwordEdit" />
+
 
     <EditText
+        android:id="@+id/passwordEdit"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_margin="8dp"
         android:hint="Enter password"
-        android:id="@+id/passwordEdit"
-        android:inputType="textPassword"/>
+        android:ems="20"
+        android:inputType="textEmailAddress"
+        android:background="@drawable/custom_input"
+        android:drawableLeft="@drawable/custom_http_icon"
+        android:drawablePadding="12dp"
+        android:paddingLeft="15dp"
+        android:layout_centerVertical="true"/>
+
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
         android:text="Sign up"
-        android:id="@+id/signup"/>
+        android:id="@+id/signup"
+        android:layout_below="@id/passwordEdit"/>
+
+<!--    </RelativeLayout>-->
 
 
 </LinearLayout>

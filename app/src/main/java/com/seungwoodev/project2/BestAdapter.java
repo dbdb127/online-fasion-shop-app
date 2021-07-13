@@ -26,15 +26,14 @@ public class BestAdapter extends RecyclerView.Adapter<BestAdapter.MyViewHolder> 
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.basket_item, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.grid_item, parent, false);
         return new MyViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        holder.mTextView_title.setText(list.get(position).getName());
-        holder.mTextView_price.setText(String.valueOf(list.get(position).getPrice()));
-        holder.mTextView_qty.setText(String.valueOf(list.get(position).getQty()));
+        holder.mTextView_title.setText(list.get(position).name);
+        holder.mTextView_price.setText(String.valueOf(list.get(position).price));
 //        holder.mImageView.setImageResource(images.get(position));
     }
 
@@ -45,15 +44,14 @@ public class BestAdapter extends RecyclerView.Adapter<BestAdapter.MyViewHolder> 
 
     public static class MyViewHolder extends RecyclerView.ViewHolder{
         ImageView mImageView;
-        TextView mTextView_title, mTextView_price, mTextView_qty;
+        TextView mTextView_title, mTextView_price;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
             mImageView = itemView.findViewById(R.id.imageview);
-            mTextView_title = itemView.findViewById(R.id.text_title);
-            mTextView_price = itemView.findViewById(R.id.text_price);
-            mTextView_qty = itemView.findViewById(R.id.text_qty);
+            mTextView_title = itemView.findViewById(R.id.textview1);
+            mTextView_price = itemView.findViewById(R.id.textview2);
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.seungwoodev.project2;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -13,6 +14,7 @@ import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -72,12 +74,43 @@ public class MainActivity extends AppCompatActivity {
 
         retrofitInterface = retrofit.create(RetrofitInterface.class);
 
-        findViewById(R.id.login).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                handleLoginDiaglog();
-            }
-        });
+        Button loginBtn = findViewById(R.id.login);
+        EditText emailEdit = findViewById(R.id.emailEdit);
+        EditText passwordEdit = findViewById(R.id.passwordEdit);
+
+        loginBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    HashMap<String, String> map = new HashMap<>();
+
+                    map.put("email", emailEdit.getText().toString());
+                    map.put("password", passwordEdit.getText().toString());
+
+                    Call<LoginResult> call = retrofitInterface.executeLogin(map);
+
+                    call.enqueue(new Callback<LoginResult>(){
+                        @Override
+                        public void onResponse(Call<LoginResult> call, Response<LoginResult> response) {
+                            LoginResult result = response.body();
+                            if(result.getCode()==200){
+                                Intent intent = new Intent(MainActivity.this, SubActivity_NotSDK.class);
+                                intent.putExtra("name", result.getName());
+//                            intent.putExtra("profileImg", result.getKakaoAccount().getProfile().getProfileImageUrl());
+                                intent.putExtra("email", result.getEmail());
+                                startActivity(intent);
+                            }else if(result.getCode()==404){
+                                Toast.makeText(MainActivity.this,"Wrong Credentials", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<LoginResult> call, Throwable t){
+                            Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                }
+            });
 
         findViewById(R.id.signup).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -198,53 +231,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
-
-    //retrofit
-    private void handleLoginDiaglog() {
-        View view = getLayoutInflater().inflate(R.layout.login_diaglog, null);
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setView(view).show();
-
-        Button loginBtn = view.findViewById(R.id.login);
-        EditText emailEdit = view.findViewById(R.id.emailEdit);
-        EditText passwordEdit = view.findViewById(R.id.passwordEdit);
-
-        loginBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                HashMap<String, String> map = new HashMap<>();
-
-                map.put("email", emailEdit.getText().toString());
-                map.put("password", passwordEdit.getText().toString());
-
-                Call<LoginResult> call = retrofitInterface.executeLogin(map);
-
-                call.enqueue(new Callback<LoginResult>(){
-                    @Override
-                    public void onResponse(Call<LoginResult> call, Response<LoginResult> response) {
-                        LoginResult result = response.body();
-                        if(result.getCode()==200){
-                            Intent intent = new Intent(MainActivity.this, SubActivity_NotSDK.class);
-                            intent.putExtra("name", result.getName());
-//                            intent.putExtra("profileImg", result.getKakaoAccount().getProfile().getProfileImageUrl());
-                            intent.putExtra("email", result.getEmail());
-                            startActivity(intent);
-                        }else if(result.getCode()==404){
-                            Toast.makeText(MainActivity.this,"Wrong Credentials", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<LoginResult> call, Throwable t){
-                        Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-            }
-        });
-    }
-
+    //local login
     private void handleSignupDialog() {
         View view = getLayoutInflater().inflate(R.layout.signup_dialog, null);
 

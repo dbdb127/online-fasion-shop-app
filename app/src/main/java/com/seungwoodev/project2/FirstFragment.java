@@ -114,12 +114,12 @@ public class FirstFragment extends Fragment {
                             @Override
                             public void onResponse(Call<CategoryResult> call, Response<CategoryResult> response) {
                                 CategoryResult res = response.body();
-                                Log.d("kyung code", res.getCode().toString()+map.get("category_main"));
+//                                Log.d("kyung code", res.getCode().toString()+map.get("category_main"));
 
                                 if(res.getCode()==200){
                                     ArrayList<String> temp;
                                     temp = res.getName();
-                                    Log.d("kyung", temp.toString());
+//                                    Log.d("kyung", temp.toString());
 
                                     Item addItem = data.get(0);
                                     for(int a=0;a<tmp.size();a++){

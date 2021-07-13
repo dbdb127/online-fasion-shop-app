@@ -15,6 +15,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.FileNotFoundException;
@@ -34,6 +35,7 @@ public class BasketActivity extends AppCompatActivity {
     private List<Integer> qty;
     private List<Integer> mImages;
     private BasketAdapter adapter;
+    private TextView totalPrice;
     public final static int REQUEST_CODE = 1;
 
     @Override
@@ -41,7 +43,10 @@ public class BasketActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_basket);
 
+
         mRecyclerView = findViewById(R.id.recyclerView);
+        totalPrice = findViewById(R.id.text_totalPrice);
+
 
         names = new ArrayList<>();
         prices = new ArrayList<Integer>();
@@ -86,6 +91,13 @@ public class BasketActivity extends AppCompatActivity {
 //                        Log.d("kyung", names.get(i));
                     }
 
+                    //total price 계산하기
+                    int tmp=0;
+                    for(int i=0;i<names.size();i++){
+                        tmp = tmp + prices.get(i)*qty.get(i);
+                    }
+
+                    totalPrice.setText(tmp+" won");
                     adapter = new BasketAdapter(BasketActivity.this, names, prices, qty, mImages);
 
                     GridLayoutManager gridLayoutManager = new GridLayoutManager(BasketActivity.this, 1, GridLayoutManager.VERTICAL, false);
@@ -107,122 +119,5 @@ public class BasketActivity extends AppCompatActivity {
             }
         });
     }
-
-//    //이미지 가져오기
-//    public void getPickImageChooserIntent() {
-//
-//
-//        List<Intent> allIntents = new ArrayList<>();
-//        PackageManager packageManager = getPackageManager();
-//        ArrayList<Image> images = new ArrayList<>();
-//        //Intent intent = new Intent(Intent.ACTION_PICK);
-//        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-//        intent.setType("image/*");
-//        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-//        //intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
-//        startActivityForResult(Intent.createChooser(intent, "이미지 다중 선택"), REQUEST_CODE);
-//
-//    }
-//
-//    //getPickImageChooserIntent()에서 startActivitiForResult하고 난 결과를 받는 메소드
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//
-//        super.onActivityResult(requestCode, resultCode, data);
-//
-//        String imagePath = null;
-//        ArrayList<String> imageListUri = new ArrayList<>();
-//        ArrayList<Uri> realUri = new ArrayList<>();
-//
-//        if (requestCode == REQUEST_CODE) {
-//
-//            Toast.makeText(this, "여기 드가욤", Toast.LENGTH_SHORT).show();
-//
-//            // photos = data.getStringArrayListExtra(PhotoPickerActivity.KEY_SELECTED_PHOTOS);
-//            if (data.getClipData() == null) {
-//
-//                Toast.makeText(this, "다중 선택이 불가능한 기기입니다", Toast.LENGTH_SHORT).show();
-//
-//            } else { //다중 선택 했을 경우
-//
-//                ClipData clipData = data.getClipData();
-//                //Log.i("clipdata1 : ", String.valueOf(clipData.getItemCount()));
-//                //Log.i("clipdata2 : ", String.valueOf(clipData.getItemCount()));
-//                //Log.i("clipdata3 : ", String.valueOf(clipData.getItemCount()));
-//
-//
-//                if (clipData.getItemCount() > 5) {
-//                    Toast.makeText(TestUploadImage.this, "사진은 5장까지 선택 가능합니다", Toast.LENGTH_SHORT).show();
-//                } else if (clipData.getItemCount() == 1) {
-//
-//                    Uri tempUri;
-//                    tempUri = clipData.getItemAt(0).getUri();
-//                    imagePath = tempUri.toString();
-//
-//                    mBitmap.add(BitmapFactory.decodeFile(imagePath));
-//                    image1.setImageBitmap(mBitmap.get(0));
-//                    //File file = new File(imagePath);
-//                    //imageView1.setImageURI(Uri.fromFile(file));
-//                } else if ((clipData.getItemCount() > 1) && (clipData.getItemCount() <= 5)) {
-//                    for (int i = 0; i < clipData.getItemCount(); i++) {
-//                        Uri tempUri;
-//                        tempUri = clipData.getItemAt(i).getUri();
-//                        Log.i("temp: ", i + " " + tempUri.toString());
-//                        imageListUri.add(tempUri.toString());
-//                        realUri.add(tempUri);
-//                        //mBitmap.add(i, BitmapFactory.decodeFile(imageListUri.get(i)));
-//
-//                        try {
-//
-//                            mBitmap.add(i,BitmapFactory.decodeStream(getContentResolver().openInputStream(realUri.get(i))));
-//
-//                        } catch (FileNotFoundException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//
-//                    if(clipData.getItemCount() == 2) {
-//                        image1.setImageBitmap(mBitmap.get(0));
-//                        image2.setImageBitmap(mBitmap.get(1));
-//
-//                    } if (clipData.getItemCount() == 3) {
-//                        image1.setImageBitmap(mBitmap.get(0));
-//                        image2.setImageBitmap(mBitmap.get(1));
-//                        image3.setImageBitmap(mBitmap.get(2));
-//
-//                    } if(clipData.getItemCount() == 4) {
-//                        image1.setImageBitmap(mBitmap.get(0));
-//                        image2.setImageBitmap(mBitmap.get(1));
-//                        image3.setImageBitmap(mBitmap.get(2));
-//                        image4.setImageBitmap(mBitmap.get(3));
-//
-//                    } if(clipData.getItemCount() == 5) {
-//                        image1.setImageBitmap(mBitmap.get(0));
-//                        image2.setImageBitmap(mBitmap.get(1));
-//                        image3.setImageBitmap(mBitmap.get(2));
-//                        image4.setImageBitmap(mBitmap.get(3));
-//                        image5.setImageBitmap(mBitmap.get(4));
-//                    }
-//                }
-//            }
-//        }
-//    }
-//
-//    private String getImageFromFilePath(Intent data) {
-//        return getPathFromUri(data.getData());
-//    }
-//
-//    public String getImageFilePath(Intent data) {
-//        return getImageFromFilePath(data);
-//    }
-//
-//    private String getPathFromUri(Uri contentUri) {
-//        String[] proj = {MediaStore.Audio.Media.DATA};
-//        Cursor cursor = getContentResolver().query(contentUri, proj, null, null, null);
-//        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA);
-//        cursor.moveToFirst();
-//        return cursor.getString(column_index);
-//    }
-
 
 }

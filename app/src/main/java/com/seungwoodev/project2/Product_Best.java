@@ -22,18 +22,18 @@ public class Product_Best {
         this.hit = hit;
     }
 
-    public String getName(){
-        return name;
-    }
-    public int getPrice(){
-        return price;
-    }
-    public int getQty(){
-        return qty;
-    }
-    public int getHit(){
-        return hit;
-    }
+//    public String getName(){
+//        return name;
+//    }
+//    public int getPrice(){
+//        return price;
+//    }
+//    public int getQty(){
+//        return qty;
+//    }
+//    public int getHit(){
+//        return hit;
+//    }
     public static boolean compare(Product_Best arg0, Product_Best arg1){
         return arg0.hit >= arg1.hit;
     }
