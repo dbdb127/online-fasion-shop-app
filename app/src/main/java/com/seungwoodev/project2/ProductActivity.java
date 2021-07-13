@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -73,45 +74,48 @@ public class ProductActivity extends AppCompatActivity {
                     prices = result.getPrice();
                     qty = result.getQty();
 
-//                    Log.d("image0","22");
-//                    for(int i=0;i<names.size();i++){
-//                        HashMap<String, String> map = new HashMap<>();
-//
-//                        map.put("name", names.get(i));
-//                        Log.d("image1",names.get(i));
-//                        Call<ResponseBody> callImage = retrofitInterface.getImage(map);
-//
-//                        callImage.enqueue(new Callback<ResponseBody>(){
-//                            @Override
-//                            public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
-//                                InputStream is = response.body().byteStream();
-//                                Log.d("is0", String.valueOf(is));
-//                                Bitmap bitmap = BitmapFactory.decodeStream(is);
-//                                Log.d("bitmap0", String.valueOf(bitmap));
-//                                mImages.add(bitmap);
-//
-//                                adapter = new ProductAdapter(ProductActivity.this, names, prices, qty, mImages);
-//                                GridLayoutManager gridLayoutManager = new GridLayoutManager(ProductActivity.this, 1, GridLayoutManager.VERTICAL, false);
-//                                mRecyclerView.setAdapter(adapter);
-//                                mRecyclerView.setLayoutManager(gridLayoutManager);
-//                                mRecyclerView.setHasFixedSize(true);
-//                            }
-//
-//                            @Override
-//                            public void onFailure(Call<ResponseBody> call, Throwable t){
-//                                Log.d("bitmapfail", "String.valueOf(bitmap)");
-//                                Toast.makeText(ProductActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
-//                            }
-//                        });
-//                    }
+                    Log.d("image0","22");
+                    for(int i=0;i<names.size();i++){
+                        final int j=i;
+                        HashMap<String, String> map = new HashMap<>();
+
+                        map.put("name", names.get(i));
+                        Log.d("image1",names.get(i));
+                        Call<ResponseBody> callImage = retrofitInterface.getImage(map);
+
+                        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+                        StrictMode.setThreadPolicy(policy);
+                        callImage.enqueue(new Callback<ResponseBody>(){
+                            @Override
+                            public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+                                InputStream is = response.body().byteStream();
+//                                URL url = is.to
+                                Bitmap bitmap = BitmapFactory.decodeStream(is);
+                                mImages.add(bitmap);
+                                if(j == names.size()-1) {
+                                    adapter = new ProductAdapter(ProductActivity.this, names, prices, qty, mImages);
+                                    GridLayoutManager gridLayoutManager = new GridLayoutManager(ProductActivity.this, 1, GridLayoutManager.VERTICAL, false);
+                                    mRecyclerView.setAdapter(adapter);
+                                    mRecyclerView.setLayoutManager(gridLayoutManager);
+                                    mRecyclerView.setHasFixedSize(true);
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<ResponseBody> call, Throwable t){
+                                Log.d("bitmapfail", "String.valueOf(bitmap)");
+                                Toast.makeText(ProductActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
+                            }
+                        });
+                    }
 
 //                    Log.d("kyung", mImages.toString());
 
-                    adapter = new ProductAdapter(ProductActivity.this, names, prices, qty, mImages);
-                    GridLayoutManager gridLayoutManager = new GridLayoutManager(ProductActivity.this, 1, GridLayoutManager.VERTICAL, false);
-                    mRecyclerView.setAdapter(adapter);
-                    mRecyclerView.setLayoutManager(gridLayoutManager);
-                    mRecyclerView.setHasFixedSize(true);
+//                    adapter = new ProductAdapter(ProductActivity.this, names, prices, qty, mImages);
+//                    GridLayoutManager gridLayoutManager = new GridLayoutManager(ProductActivity.this, 1, GridLayoutManager.VERTICAL, false);
+//                    mRecyclerView.setAdapter(adapter);
+//                    mRecyclerView.setLayoutManager(gridLayoutManager);
+//                    mRecyclerView.setHasFixedSize(true);
 
                 }else if(result.getCode()==404){
                     Toast.makeText(ProductActivity.this.getApplicationContext(),"No Products", Toast.LENGTH_SHORT).show();

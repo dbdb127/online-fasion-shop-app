@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -15,6 +16,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
 
 import java.util.HashMap;
 
@@ -37,16 +40,17 @@ public class ImageFullActivity extends AppCompatActivity {
         setContentView(R.layout.activity_image_full);
 
         Intent intent = getIntent();
-//        byte[] arr = getIntent().getByteArrayExtra("image");
-//        image = BitmapFactory.decodeByteArray(arr, 0, arr.length);
-//        ImageView BigImage = (ImageView)findViewById(R.id.imageView);
-//        BigImage.setImageBitmap(image);
+        byte[] arr = intent.getByteArrayExtra("image");
+        Log.d("imageintent", String.valueOf(arr));
+        image = BitmapFactory.decodeByteArray(arr, 0, arr.length);
+        ImageView BigImage = (ImageView)findViewById(R.id.imageView);
+        BigImage.setImageBitmap(image);
 
         image = intent.getParcelableExtra("image");
         strTitle = intent.getStringExtra("title");
         intPrice = intent.getIntExtra("price", 10000);
 
-        ImageView imageview = findViewById(R.id.imageView);
+//        ImageView imageview = findViewById(R.id.imageView);
         TextView text_title = findViewById(R.id.text_title);
         TextView text_price = findViewById(R.id.text_price);
         TextView text_qty = findViewById(R.id.text_qty);
@@ -103,7 +107,8 @@ public class ImageFullActivity extends AppCompatActivity {
                     text_title.setText(strTitle);
                     text_price.setText(intPrice+"");
                     text_qty.setText(intQty+"");
-                    imageview.setImageBitmap(image);
+//                    Glide.with(getApplicationContext()).load(image).into(imageview);
+                    BigImage.setImageBitmap(image);
 
 
                 }else if(response.code()==404){
@@ -177,7 +182,7 @@ public class ImageFullActivity extends AppCompatActivity {
                                                         text_title.setText(strTitle);
                                                         text_price.setText(intPrice+"");
                                                         text_qty.setText(intQty+"");
-                                                        imageview.setImageBitmap(image);
+//                                                        imageview.setImageBitmap(image);
 
                                                     }else if(response.code()==404){
                                                         Toast.makeText(ImageFullActivity.this,"No Products", Toast.LENGTH_SHORT).show();
@@ -224,7 +229,7 @@ public class ImageFullActivity extends AppCompatActivity {
                                                         text_title.setText(strTitle);
                                                         text_price.setText(intPrice+"");
                                                         text_qty.setText(intQty+"");
-                                                        imageview.setImageBitmap(image);
+//                                                        imageview.setImageBitmap(image);
 
                                                     }else if(response.code()==404){
                                                         Toast.makeText(ImageFullActivity.this,"No Products", Toast.LENGTH_SHORT).show();

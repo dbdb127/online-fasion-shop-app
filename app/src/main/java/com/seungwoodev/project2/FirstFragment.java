@@ -94,32 +94,21 @@ public class FirstFragment extends Fragment {
                     ArrayList<String> tmp;
                     tmp = result.getName();
 
-//                    for(int i=0; i<tmp.size();i++){
-//                        data.add(new Item(0, tmp.get(i).get(0)));
-//                        for(int j=1;j<tmp.get(i).size();j++){
-//                            data.add(new Item(1, tmp.get(i).get(j)));
-//                        }
-
-                    Log.d("kyung", tmp.toString());
-//                    }
                     for(int i=0;i<tmp.size();i++){
                         Item main = new Item(0, tmp.get(i));
                         data.add(main);
                         HashMap<String, String> map = new HashMap<>();
                         map.put("category_main", tmp.get(i));
-//                        Log.d("kyung", tmp.get(i));
                         Call<CategoryResult> callSub = retrofitInterface.getSubCategory(map);
 
                         callSub.enqueue(new Callback<CategoryResult>() {
                             @Override
                             public void onResponse(Call<CategoryResult> call, Response<CategoryResult> response) {
                                 CategoryResult res = response.body();
-//                                Log.d("kyung code", res.getCode().toString()+map.get("category_main"));
 
                                 if(res.getCode()==200){
                                     ArrayList<String> temp;
                                     temp = res.getName();
-//                                    Log.d("kyung", temp.toString());
 
                                     Item addItem = data.get(0);
                                     for(int a=0;a<tmp.size();a++){
@@ -153,8 +142,6 @@ public class FirstFragment extends Fragment {
                                 mRecyclerView.setLayoutManager(mLineaerLayoutManager);
                                 mRecyclerView.setAdapter(adapter);
                                 mRecyclerView.setHasFixedSize(true);
-//                                DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(), mLineaerLayoutManager.getOrientation());
-//                                mRecyclerView.addItemDecoration(dividerItemDecoration);
                             }
                             @Override
                             public void onFailure(Call<CategoryResult> call, Throwable t) {
@@ -162,28 +149,6 @@ public class FirstFragment extends Fragment {
                             }
                         });
                     }
-
-                    Log.d("kyung", String.valueOf(data.size()));
-//                    for(int a=0;a<data.size();a++){
-//                        Log.d("kyung", data);
-//                    }
-//                    adapter = new ExpandableListAdapter(data);
-//
-//                    adapter.setOnItemClickListener(new ExpandableListAdapter.OnItemClickListener() {
-//                        @Override
-//                        public void onItemClick(int position, Item item) {
-//                            Intent intent = new Intent(getActivity().getApplicationContext(), ProductActivity.class);
-//                            intent.putExtra("subCategory", item.getText());
-//                            startActivity(intent);
-//                        }
-//                    });
-//
-//                    LinearLayoutManager mLineaerLayoutManager = new LinearLayoutManager(getActivity());
-//                    mRecyclerView.setLayoutManager(mLineaerLayoutManager);
-//                    mRecyclerView.setAdapter(adapter);
-//                    mRecyclerView.setHasFixedSize(true);
-//                    DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(), mLineaerLayoutManager.getOrientation());
-//                    mRecyclerView.addItemDecoration(dividerItemDecoration);
 
                 }else if(result.getCode()==404){
                     Toast.makeText(getActivity().getApplicationContext(),"No Products", Toast.LENGTH_SHORT).show();
