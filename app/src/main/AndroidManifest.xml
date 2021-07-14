@@ -20,7 +20,8 @@
         <activity android:name=".ImageFullActivity" />
         <activity android:name=".SubActivity_Kakao" />
         <activity android:name=".MainActivity_Tab" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"/>
+        <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
