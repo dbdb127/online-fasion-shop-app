@@ -7,8 +7,8 @@ const {MYSQL_HOST, MYSQL_PORT, MYSQL_ID, MYSQL_PW, MYSQL_DB}=process.env;
 let connPool=mysql.createPool({
     host: 'localhost', // Replace your HOST IP
     user: 'root',
-    password: 'rhwldn',
-    database: 'shopping',
+    password: '', // Replace your password
+    database: 'shopping', // Replace your db name
     port:80,
     connectionLimit:10
 });
