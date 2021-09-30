@@ -22,8 +22,8 @@ Retrofit
 Glide
 
 ## Usage
-### Download or clone the project
-### Compile on Android studio or use apk
+Download or clone the project
+Compile on Android studio or use apk
 
 ## Features
 
