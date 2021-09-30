@@ -28,7 +28,7 @@ Compile on Android studio or use apk
 ## Features
 
 ### Login page
-Signin/Login with Google, Kakao, email & password (Password encrypted by sha512)
+Sign in and Login with Google, Kakao, email & password (Password encrypted by sha512)
 ![shop-splash](https://user-images.githubusercontent.com/65812107/135447060-5b43e838-9b33-420c-8275-938ca38e7f43.gif)
 ![shop-signup](https://user-images.githubusercontent.com/65812107/135448438-3082a2eb-1baf-45d0-a508-78e8060003b5.gif)
 ![shop-login](https://user-images.githubusercontent.com/65812107/135448427-f6e0dd89-a5c9-4d65-9479-b0abcfdf2b46.gif)
