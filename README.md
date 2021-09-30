@@ -1,4 +1,5 @@
-# Shopping-App-Project
+# online-fashion-shop-app
+Online fashion shop android app
 KAIST MADCAMP Project-2
 
 ## Development Environment
