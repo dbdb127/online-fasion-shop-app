@@ -1,6 +1,6 @@
 # online-fashion-shop-app
-### Online fashion shop android app
-### KAIST MADCAMP Week 2
+Online fashion shop android app
+KAIST MADCAMP Week 2
 
 ## Development Environment
 Client
