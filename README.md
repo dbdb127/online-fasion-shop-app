@@ -16,14 +16,14 @@ Database
 
 
 ## Dependencies Used
-Kakao SDK
-Google SDK
-Retrofit
-Glide
+- Kakao SDK
+- Google SDK
+- Retrofit
+- Glide
 
 ## Usage
-Download or clone the project
-Compile on Android studio or use apk
+- Download or clone the project
+- Compile on Android studio or use apk
 
 ## Features
 
