@@ -72,6 +72,8 @@ Compile on Android studio or use apk
 ### Cart Floating Action
 - Total Price
 - List of products added to the cart
+- Buy products
+- Delete products
 
 ![buyall](https://user-images.githubusercontent.com/65812107/135451741-d4d4a062-5d4e-41c1-aa2a-975e904f6812.gif)
 ![ezgif-3-0599e32740f7](https://user-images.githubusercontent.com/65812107/135451726-f13fd109-1d39-4ce9-9618-53e7fbb84eff.gif)
