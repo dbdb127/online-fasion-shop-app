@@ -88,6 +88,7 @@ public class BasketActivity extends AppCompatActivity {
                 }
                 map.put("price", String.valueOf(tmp));
                 map.put("email", MainActivity_Tab.getUser());
+
                 Timestamp timestamp = new Timestamp(System.currentTimeMillis());
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
                 map.put("time", String.valueOf(sdf.format(timestamp)));

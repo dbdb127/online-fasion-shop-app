@@ -92,7 +92,7 @@ public class SubActivity_Google extends AppCompatActivity {
 
 
         GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(SubActivity_Google.this);
-        Log.d("Google revoke accesss account", acct+"");
+        Log.d("Google revoke access account", acct+"");
         if (acct != null) {
             // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
             GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)

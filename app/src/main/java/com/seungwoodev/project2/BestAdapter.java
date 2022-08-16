@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -91,6 +92,9 @@ public class BestAdapter extends RecyclerView.Adapter<BestAdapter.MyViewHolder> 
                 Toast.makeText(context, t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
+
+
+        holder.mImageView.setImageBitmap(images.get(position));
 
     }
 

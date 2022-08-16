@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.StrictMode;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +35,8 @@ import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import java.util.List;
+
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.MyViewHolder> {
@@ -44,9 +48,7 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.MyViewHold
     private List<Integer> qty;
     private List<Bitmap> images;
 
-
-    public BasketAdapter(Context context, List<String> names, List<Integer> prices, List<Integer> qty, List<Bitmap> images){
-//        this.activity = activity;
+    public BasketAdapter(Context context, List<String> titles, List<Integer> prices, List<Integer> qty, List<Bitmap> images){
         this.context = context;
         this.names = names;
         this.prices = prices;
@@ -103,6 +105,7 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.MyViewHold
                 Toast.makeText(context, t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
+        holder.mImageView.setImageBitmap(images.get(position));
     }
 
     @Override
@@ -128,6 +131,7 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.MyViewHold
 
             retrofitInterface = retrofit.create(RetrofitInterface.class);
 
+
             mImageView = itemView.findViewById(R.id.product_imageview);
             mTextView_title = itemView.findViewById(R.id.text_title);
             mTextView_price = itemView.findViewById(R.id.text_price);
@@ -145,6 +149,7 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.MyViewHold
 
                     intent.putExtra("image",byteArray);
                     intent.putExtra("title", names.get(position));
+                    intent.putExtra("title", titles.get(position));
                     intent.putExtra("price", prices.get(position));
                     intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(intent);
@@ -202,3 +207,4 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.MyViewHold
         }
     }
 }
+
